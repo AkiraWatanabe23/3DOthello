@@ -9,6 +9,7 @@ public class Board : MonoBehaviour
     [SerializeField] int _turn = 0;
     [SerializeField] GameObject _white;
     [SerializeField] GameObject _black;
+    RaycastHit _hit;
 
     // Start is called before the first frame update
     void Start()
@@ -54,7 +55,31 @@ public class Board : MonoBehaviour
         //空いているマスに石を置く処理
         if (Input.GetMouseButtonDown(0))
         {
+            if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out _hit))
+            {
+                int x = (int)_hit.collider.gameObject.transform.position.x;
+                int z = (int)_hit.collider.gameObject.transform.position.z;
 
+                if (_boardState[x, z] == 0)
+                {
+                    if (_turn == 1)
+                    {
+                        _boardState[x, z] = (int)TileState.White;
+                        Instantiate(_white, new Vector3(x, 0.1f, z), _white.transform.rotation);
+                        _turn = 2;
+                    }
+                    else
+                    {
+                        _boardState[x, z] = (int)TileState.Black;
+                        Instantiate(_black, new Vector3(x, 0.1f, z), _black.transform.rotation);
+                        _turn = 1;
+                    }
+                }
+                else
+                {
+                    Debug.Log("ここには置けない");
+                }
+            }
         }
     }
 
