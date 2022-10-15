@@ -87,6 +87,7 @@ public class Board : MonoBehaviour
     {
         None = 0,
         White,
-        Black
+        Black,
+        UnSettable = -1 //‚±‚±‚Ìƒ}ƒX‚É‚Í’u‚¯‚È‚¢
     }
 }
