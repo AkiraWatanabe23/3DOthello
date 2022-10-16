@@ -10,6 +10,11 @@ public class Board : MonoBehaviour
     [SerializeField] GameObject _white;
     [SerializeField] GameObject _black;
     RaycastHit _hit;
+    //前後左右方向のマスからの移動差(マスの探索に使う)
+    int[] ZnumVer = new int[] { -1, 1 };
+    int[] XnumVer = new int[] { -1, 1 };
+    int[] ZnumHor = new int[] { -1, 1 };
+    int[] XnumHor = new int[] { -1, 1, -1, 1 };
 
     // Start is called before the first frame update
     void Start()
@@ -52,7 +57,7 @@ public class Board : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //空いているマスに石を置く処理
+        //空いているマスに石を置く処理(置けるマスか置けないマスかの判断をする処理も)
         if (Input.GetMouseButtonDown(0))
         {
             if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out _hit))
@@ -60,27 +65,83 @@ public class Board : MonoBehaviour
                 int x = (int)_hit.collider.gameObject.transform.position.x;
                 int z = (int)_hit.collider.gameObject.transform.position.z;
 
-                if (_boardState[x, z] == 0)
+                if (SettableCheck(x, z) == true)
                 {
-                    if (_turn == 1)
+                    if (_boardState[x, z] == 0)
                     {
-                        _boardState[x, z] = (int)TileState.White;
-                        Instantiate(_white, new Vector3(x, 0.1f, z), _white.transform.rotation);
-                        _turn = 2;
-                    }
-                    else
-                    {
-                        _boardState[x, z] = (int)TileState.Black;
-                        Instantiate(_black, new Vector3(x, 0.1f, z), _black.transform.rotation);
-                        _turn = 1;
+                        if (_turn == 1)
+                        {
+                            _boardState[x, z] = (int)TileState.White;
+                            Instantiate(_white, new Vector3(x, 0.1f, z), _white.transform.rotation);
+                            _turn = 2;
+                        }
+                        else
+                        {
+                            _boardState[x, z] = (int)TileState.Black;
+                            Instantiate(_black, new Vector3(x, 0.1f, z), _black.transform.rotation);
+                            _turn = 1;
+                        }
                     }
                 }
                 else
                 {
-                    Debug.Log("ここには置けない");
+                    Debug.Log("このマスには置けません");
                 }
             }
         }
+    }
+
+    bool SettableCheck(int x, int z)
+    {
+        //選ばれたマスの全方向を1マスずつ探索し、置けるマスかどうか(そこに置いたらひっくり返せるか)を判定する
+        //前後
+        for (int i = 0; i < ZnumVer.Length; i++)
+        {
+            if ((i == 0 && z != 0) || (i == 1 && z != 7)) //IndexOutOfRange防止
+            {
+                if (_turn == 1)
+                {
+                    //↓これだけだと足りない?
+                    if (_boardState[x, z] == (int)TileState.Black)
+                    {
+
+                    }
+                }
+                else
+                {
+
+                }
+            }
+        }
+        //左右
+        for (int i = 0; i < XnumVer.Length; i++)
+        {
+            if ((i == 0 && x != 0) || (i == 1 && x != 7))
+            {
+
+            }
+        }
+        //斜め
+        for (int i = 0; i < XnumHor.Length; i++)
+        {
+            if (i <= 1) //前
+            {
+                if ((i == 0 && x != 0 && z != 0) ||
+                    (i == 1 && x != 7 && z != 0))
+                {
+
+                }
+            }
+            else //後ろ
+            {
+                if ((i == 2 && x != 0 && z != 7) ||
+                    (i == 3 && x != 7 && z != 7))
+                {
+
+                }
+            }
+        }
+        return false;
     }
 
     enum TileState
