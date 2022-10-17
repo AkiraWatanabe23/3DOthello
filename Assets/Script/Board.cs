@@ -5,7 +5,6 @@ using UnityEngine;
 public class Board : MonoBehaviour
 {
     int[,] _boardState = new int[8, 8];
-    int _start = 0; //最初にどっちからか決める
     [SerializeField] int _turn = 0;
     [SerializeField] GameObject _white;
     [SerializeField] GameObject _black;
@@ -38,20 +37,7 @@ public class Board : MonoBehaviour
                     _boardState[i, j] = (int)TileState.None;
             }
         }
-        //最初にどっちからか決める
-        _start = Random.Range(1,10);
-        if (_start % 2 == 1)
-        {
-            //白から始める
-            _turn = 1;
-            Debug.Log("白からです");
-        }
-        else
-        {
-            //黒から始める
-            _turn = 2;
-            Debug.Log("黒からです");
-        }
+        _turn = 2; //オセロは初手黒かららしい
     }
 
     // Update is called once per frame
@@ -93,24 +79,26 @@ public class Board : MonoBehaviour
 
     bool SettableCheck(int x, int z)
     {
-        //選ばれたマスの全方向を1マスずつ探索し、置けるマスかどうか(そこに置いたらひっくり返せるか)を判定する
+        //選ばれたマスの全方向を探索し、置けるマスかどうか(そこに置いたらひっくり返せるか)を判定する
         //前後
+        //白ターン
+        if (_turn == 1)
+        {
+            while (_boardState[x, z] == (int)TileState.Black)
+            {
+
+            }
+        }
+        //黒ターン
+        else
+        {
+
+        }
         for (int i = 0; i < ZnumVer.Length; i++)
         {
             if ((i == 0 && z != 0) || (i == 1 && z != 7)) //IndexOutOfRange防止
             {
-                if (_turn == 1)
-                {
-                    //↓これだけだと足りない?
-                    if (_boardState[x, z] == (int)TileState.Black)
-                    {
 
-                    }
-                }
-                else
-                {
-
-                }
             }
         }
         //左右
