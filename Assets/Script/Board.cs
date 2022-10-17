@@ -4,10 +4,13 @@ using UnityEngine;
 
 public class Board : MonoBehaviour
 {
-    int[,] _boardState = new int[8, 8];
+    int[,] _boardState = new int[8, 8];      //マスの情報を保存しておく
+    bool[,] _boardSettable = new bool[8, 8]; //置けるマスはtrueを返すことで、配置の可否を判断する
     [SerializeField] int _turn = 0;
+    int _beFraTurn = 0;
     [SerializeField] GameObject _white;
     [SerializeField] GameObject _black;
+    [SerializeField] GameObject _settableTile;
     RaycastHit _hit;
     //前後左右方向のマスからの移動差(マスの探索に使う)
     int[] ZnumVer = new int[] { -1, 1 };
@@ -23,12 +26,13 @@ public class Board : MonoBehaviour
         {
             for (int j = 0; j < 8; j++)
             {
-                if ((i == 3 && j == 4) || (i == 4 && j == 3))
+                Instantiate(_settableTile, new Vector3(i, 0.1f, j), _settableTile.transform.rotation);
+                if ((i == 3 && j == 4) || (i == 4 && j == 3)) //白石の初期配置
                 {
                     _boardState[i, j] = (int)TileState.White;
                     Instantiate(_white, new Vector3(i, 0.1f, j), _white.transform.rotation);
                 }
-                else if ((i == 3 && j == 3) || (i == 4 && j == 4))
+                else if ((i == 3 && j == 3) || (i == 4 && j == 4)) //黒石の初期配置
                 {
                     _boardState[i, j] = (int)TileState.Black;
                     Instantiate(_black, new Vector3(i, 0.1f, j), _black.transform.rotation);
@@ -38,11 +42,25 @@ public class Board : MonoBehaviour
             }
         }
         _turn = 2; //オセロは初手黒かららしい
+        _beFraTurn = 2;
     }
 
     // Update is called once per frame
     void Update()
     {
+        //ターンが切り替わったタイミングで、石を置けるマスがあるかどうかを判定する(なかった場合、パスになる)
+        if (_turn != _beFraTurn)
+        {
+            for (int i = 0; i < 8; i++)
+            {
+                for (int j = 0; j < 8; j++)
+                {
+                    SettableCheck(j, i);
+                }
+            }
+        }
+        _beFraTurn = _turn;
+
         //空いているマスに石を置く処理(置けるマスか置けないマスかの判断をする処理も)
         if (Input.GetMouseButtonDown(0))
         {
@@ -51,48 +69,44 @@ public class Board : MonoBehaviour
                 int x = (int)_hit.collider.gameObject.transform.position.x;
                 int z = (int)_hit.collider.gameObject.transform.position.z;
 
-                if (SettableCheck(x, z) == true)
+                if (_turn == 1)
                 {
-                    if (_boardState[x, z] == 0)
-                    {
-                        if (_turn == 1)
-                        {
-                            _boardState[x, z] = (int)TileState.White;
-                            Instantiate(_white, new Vector3(x, 0.1f, z), _white.transform.rotation);
-                            _turn = 2;
-                        }
-                        else
-                        {
-                            _boardState[x, z] = (int)TileState.Black;
-                            Instantiate(_black, new Vector3(x, 0.1f, z), _black.transform.rotation);
-                            _turn = 1;
-                        }
-                    }
+                    _boardState[x, z] = (int)TileState.White;
+                    Instantiate(_white, new Vector3(x, 0.1f, z), _white.transform.rotation);
+                    _turn = 2;
                 }
                 else
                 {
-                    Debug.Log("このマスには置けません");
+                    _boardState[x, z] = (int)TileState.Black;
+                    Instantiate(_black, new Vector3(x, 0.1f, z), _black.transform.rotation);
+                    _turn = 1;
                 }
             }
         }
     }
 
-    bool SettableCheck(int x, int z)
+    void SettableCheck(int x, int z)
     {
         //選ばれたマスの全方向を探索し、置けるマスかどうか(そこに置いたらひっくり返せるか)を判定する
-        //前後
         //白ターン
         if (_turn == 1)
         {
-            while (_boardState[x, z] == (int)TileState.Black)
+            while (_boardState[x, z] == (int)TileState.Black) //探索先にひっくり返せる可能性のある石がある間実行される
             {
-
+                z--;
+            }
+            if (_boardState[x, z] == (int)TileState.White) //石が挟まれているか
+            {
+                _boardSettable[x, z] = true;
             }
         }
         //黒ターン
         else
         {
+            while (_boardState[x, z] == (int)TileState.White)
+            {
 
+            }
         }
         for (int i = 0; i < ZnumVer.Length; i++)
         {
@@ -109,6 +123,7 @@ public class Board : MonoBehaviour
 
             }
         }
+
         //斜め
         for (int i = 0; i < XnumHor.Length; i++)
         {
@@ -129,7 +144,6 @@ public class Board : MonoBehaviour
                 }
             }
         }
-        return false;
     }
 
     enum TileState

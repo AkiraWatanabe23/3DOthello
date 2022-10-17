@@ -3586,6 +3586,7 @@ MonoBehaviour:
   _turn: 0
   _white: {fileID: 404679384067465662, guid: f64087611bb3ecc4abf2dcf9e8c4ee3a, type: 3}
   _black: {fileID: 3247059027500752576, guid: b80ed9fbd980d5848afc855f7ae2ceb5, type: 3}
+  _settableTile: {fileID: 6962887404808332351, guid: 90e0c22d340376445a420d60c3ed337a, type: 3}
 --- !u!1001 &1485587459
 PrefabInstance:
   m_ObjectHideFlags: 0
