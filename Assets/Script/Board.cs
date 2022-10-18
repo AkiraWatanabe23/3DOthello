@@ -6,6 +6,7 @@ public class Board : MonoBehaviour
 {
     int[,] _boardState = new int[8, 8];      //マスの情報を保存しておく
     bool[,] _boardSettable = new bool[8, 8]; //置けるマスはtrueを返すことで、配置の可否を判断する
+    GameObject[,] _tiles = new GameObject[8, 8];
     [SerializeField] int _turn = 0;
     int _beFraTurn = 0;
     [SerializeField] GameObject _white;
@@ -17,6 +18,7 @@ public class Board : MonoBehaviour
     int[] XnumVer = new int[] { -1, 1 };
     int[] ZnumHor = new int[] { -1, 1 };
     int[] XnumHor = new int[] { -1, 1, -1, 1 };
+    public GameObject[,] Tiles { get => _tiles; set => _tiles = value; }
 
     // Start is called before the first frame update
     void Start()
@@ -26,7 +28,7 @@ public class Board : MonoBehaviour
         {
             for (int j = 0; j < 8; j++)
             {
-                Instantiate(_settableTile, new Vector3(i, 0.1f, j), _settableTile.transform.rotation);
+                Tiles[i, j] = Instantiate(_settableTile, new Vector3(i, 0.1f, j), _settableTile.transform.rotation);
                 if ((i == 3 && j == 4) || (i == 4 && j == 3)) //白石の初期配置
                 {
                     _boardState[i, j] = (int)TileState.White;
@@ -61,7 +63,7 @@ public class Board : MonoBehaviour
         }
         _beFraTurn = _turn;
 
-        //空いているマスに石を置く処理(置けるマスか置けないマスかの判断をする処理も)
+        //空いているマスに石を置く処理(上記の処理で置けるマスを明示的に表示する予定)
         if (Input.GetMouseButtonDown(0))
         {
             if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out _hit))
@@ -85,9 +87,14 @@ public class Board : MonoBehaviour
         }
     }
 
-    void SettableCheck(int x, int z)
+    /// <summary>
+    /// 選ばれた(クリックされた)マスに石を置くことが出来るかを判定する
+    /// </summary>
+    /// <param name="x">選んだマスのx座標</param>
+    /// <param name="z">選んだマスのz座標</param>
+    bool SettableCheck(int x, int z)
     {
-        //選ばれたマスの全方向を探索し、置けるマスかどうか(そこに置いたらひっくり返せるか)を判定する
+        //選ばれたマスの全方向を探索し、置けるマスかどうか(そこに置いたらひっくり返る石があるか)を判定する
         //白ターン
         if (_turn == 1)
         {
@@ -108,6 +115,8 @@ public class Board : MonoBehaviour
 
             }
         }
+
+        //前後
         for (int i = 0; i < ZnumVer.Length; i++)
         {
             if ((i == 0 && z != 0) || (i == 1 && z != 7)) //IndexOutOfRange防止
@@ -144,6 +153,7 @@ public class Board : MonoBehaviour
                 }
             }
         }
+        return false;
     }
 
     enum TileState
@@ -151,6 +161,5 @@ public class Board : MonoBehaviour
         None = 0,
         White,
         Black,
-        UnSettable = -1 //ここのマスには置けない
     }
 }
