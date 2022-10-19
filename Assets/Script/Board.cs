@@ -13,11 +13,9 @@ public class Board : MonoBehaviour
     [SerializeField] GameObject _black;
     [SerializeField] GameObject _settableTile;
     RaycastHit _hit;
-    //前後左右方向のマスからの移動差(マスの探索に使う)
-    int[] ZnumVer = new int[] { -1, 1 };
-    int[] XnumVer = new int[] { -1, 1 };
-    int[] ZnumHor = new int[] { -1, 1 };
-    int[] XnumHor = new int[] { -1, 1, -1, 1 };
+    //マスからの移動差(探索に使う)
+    //Key...x, Value...z からの変化値
+    Dictionary<int, int> _checkSet = new Dictionary<int, int>() { {-1, 0}, {-1, 1}, {0, 1}, {1, 1}, {1, 0}, {1, -1}, {0, -1}, {-1, -1} };
     public GameObject[,] Tiles { get => _tiles; set => _tiles = value; }
 
     // Start is called before the first frame update
@@ -88,13 +86,12 @@ public class Board : MonoBehaviour
     }
 
     /// <summary>
-    /// 選ばれた(クリックされた)マスに石を置くことが出来るかを判定する
+    /// 空いているマスに石を置くことが出来るかを判定する
     /// </summary>
     /// <param name="x">選んだマスのx座標</param>
     /// <param name="z">選んだマスのz座標</param>
     bool SettableCheck(int x, int z)
     {
-        //選ばれたマスの全方向を探索し、置けるマスかどうか(そこに置いたらひっくり返る石があるか)を判定する
         //白ターン
         if (_turn == 1)
         {
@@ -113,44 +110,6 @@ public class Board : MonoBehaviour
             while (_boardState[x, z] == (int)TileState.White)
             {
 
-            }
-        }
-
-        //前後
-        for (int i = 0; i < ZnumVer.Length; i++)
-        {
-            if ((i == 0 && z != 0) || (i == 1 && z != 7)) //IndexOutOfRange防止
-            {
-
-            }
-        }
-        //左右
-        for (int i = 0; i < XnumVer.Length; i++)
-        {
-            if ((i == 0 && x != 0) || (i == 1 && x != 7))
-            {
-
-            }
-        }
-
-        //斜め
-        for (int i = 0; i < XnumHor.Length; i++)
-        {
-            if (i <= 1) //前
-            {
-                if ((i == 0 && x != 0 && z != 0) ||
-                    (i == 1 && x != 7 && z != 0))
-                {
-
-                }
-            }
-            else //後ろ
-            {
-                if ((i == 2 && x != 0 && z != 7) ||
-                    (i == 3 && x != 7 && z != 7))
-                {
-
-                }
             }
         }
         return false;
