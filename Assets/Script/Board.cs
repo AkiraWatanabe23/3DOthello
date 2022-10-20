@@ -7,16 +7,17 @@ public class Board : MonoBehaviour
     int[,] _boardState = new int[8, 8];      //マスの情報を保存しておく
     bool[,] _boardSettable = new bool[8, 8]; //置けるマスはtrueを返すことで、配置の可否を判断する
     GameObject[,] _tiles = new GameObject[8, 8];
-    [SerializeField] int _turn = 0;
+    [Tooltip("1...白, 2...黒"), SerializeField] int _turn = 0;
     int _beFraTurn = 0;
     [SerializeField] GameObject _white;
     [SerializeField] GameObject _black;
     [SerializeField] GameObject _settableTile;
-    RaycastHit _hit;
     //マスからの移動差(探索に使う)
     int[] _checkSetX = new[] { -1, -1, 0, 1, 1, 1, 0, -1 };
     int[] _checkSetZ = new[] { 0, 1, 1, 1, 0, -1, -1, -1 };
+    List<SwitchColor> _switchable = new();
     public GameObject[,] Tiles { get => _tiles; set => _tiles = value; }
+    public List<SwitchColor> Switchable { get => _switchable; set => _switchable = value; }
 
     // Start is called before the first frame update
     void Start()
@@ -43,13 +44,14 @@ public class Board : MonoBehaviour
         }
         _turn = 2; //オセロは初手黒かららしい
         _beFraTurn = 2;
-        DrawingSettable();
+        SettableDrawing();
     }
 
     // Update is called once per frame
     void Update()
     {
         //ターンが切り替わったタイミングで、石を置けるマスがあるかどうかを判定する(なかった場合、パスになる)
+        //この部分の処理で置けるマスを明示的にする
         if (_turn != _beFraTurn)
         {
             //ここで配置可能マスの探索リセット
@@ -61,35 +63,42 @@ public class Board : MonoBehaviour
                     Tiles[i, j].GetComponent<MeshRenderer>().enabled = false;
                 }
             }
-            DrawingSettable();
+            SettableDrawing();
+            _beFraTurn = _turn;
         }
-        _beFraTurn = _turn;
 
-        //空いているマスに石を置く処理(上記の処理で置けるマスを明示的に表示する予定)
+        //空いているマスに石を置く処理
         if (Input.GetMouseButtonDown(0))
         {
-            if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out _hit))
+            if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out RaycastHit hit) && 
+                hit.collider.gameObject.CompareTag("Tile"))
             {
-                int x = (int)_hit.collider.gameObject.transform.position.x;
-                int z = (int)_hit.collider.gameObject.transform.position.z;
+                int x = (int)hit.collider.gameObject.transform.position.x;
+                int z = (int)hit.collider.gameObject.transform.position.z;
 
                 if (_boardSettable[x, z] == true)
                 {
-                    if (_turn == 1)
-                    {
-                        _boardState[x, z] = (int)TileState.White;
-                        Instantiate(_white, new Vector3(x, 0.1f, z), _white.transform.rotation);
-                    }
-                    else
-                    {
-                        _boardState[x, z] = (int)TileState.Black;
-                        Instantiate(_black, new Vector3(x, 0.1f, z), _black.transform.rotation);
-                    }
+                    TurnOver(x, z);
                     _turn = _turn == 1 ? 2 : 1; //ターンの切り替え
                 }
                 else
                 {
                     Debug.Log("このマスには置けません");
+                }
+            }
+        }
+    }
+
+    void SettableDrawing()
+    {
+        for (int i = 0; i < 8; i++)
+        {
+            for (int j = 0; j < 8; j++)
+            {
+                SettableCheck(j, i);
+                if (_boardSettable[i, j] == true)
+                {
+                    Tiles[i, j].GetComponent<MeshRenderer>().enabled = true;
                 }
             }
         }
@@ -109,14 +118,12 @@ public class Board : MonoBehaviour
             //探索を始めるマス
             int startX = x;
             int startZ = z;
-            //探索する方向の情報
-            int checkX = _checkSetX[i];
-            int checkZ = _checkSetZ[i];
+            Switchable.Clear();
 
             if (_boardState[startX, startZ] == (int)TileState.None) //置けるマスは石を置いていないマス
             {
-                x += checkX;
-                z += checkZ;
+                x += _checkSetX[i];
+                z += _checkSetZ[i];
             }
             else //石があるマスは探索外
                 break;
@@ -129,8 +136,9 @@ public class Board : MonoBehaviour
 
                 while (_boardState[x, z] == (int)TileState.Black) //探索先にひっくり返せる石がある間実行される
                 {
-                    x += checkX;
-                    z += checkZ;
+                    Switchable.Add(new SwitchColor(x, z));
+                    x += _checkSetX[i];
+                    z += _checkSetZ[i];
                     count++;
                 }
 
@@ -147,8 +155,9 @@ public class Board : MonoBehaviour
 
                 while (_boardState[x, z] == (int)TileState.White)
                 {
-                    x += checkX;
-                    z += checkZ;
+                    Switchable.Add(new SwitchColor(x, z));
+                    x += _checkSetX[i];
+                    z += _checkSetZ[i];
                     count++;
                 }
 
@@ -156,22 +165,50 @@ public class Board : MonoBehaviour
                 {
                     _boardSettable[startX, startZ] = true;
                 }
+                Debug.Log(Switchable.Count);
             }
         }
     }
 
-    void DrawingSettable()
+    void TurnOver(int x, int z)
     {
-        for (int i = 0; i < 8; i++)
+        GameObject setting = null;
+        SettableCheck(x, z);
+
+        if (_turn == 1)
         {
-            for (int j = 0; j < 8; j++)
+            _boardState[x, z] = (int)TileState.White;
+            setting = _white;
+        }
+        else
+        {
+            _boardState[x, z] = (int)TileState.Black;
+            setting = _black;
+        }
+        //選んだマスに石を置く
+        Instantiate(setting, new Vector3(x, 0.1f, z), setting.transform.rotation);
+        //ひっくり返す(っぽい処理)
+        for (int i = 0; i < Switchable.Count; i++)
+        {
+            SwitchColor switchPos = Switchable[i];
+            if (Physics.Raycast(new Vector3(switchPos.switchX, 1f, switchPos.switchZ), Vector3.down, out RaycastHit hit, 5))
             {
-                SettableCheck(j, i);
-                if (_boardSettable[i, j] == true)
-                {
-                    Tiles[i, j].GetComponent<MeshRenderer>().enabled = true;
-                }
+                Destroy(hit.collider.gameObject);
+                Debug.Log("aaa");
             }
+            Instantiate(setting, new Vector3(switchPos.switchX, 0.1f, switchPos.switchZ), setting.transform.rotation);
+        }
+        Switchable.Clear();
+    }
+
+    public struct SwitchColor
+    {
+        public int switchX;
+        public int switchZ;
+        public SwitchColor(int x, int z)
+        {
+            switchX = x;
+            switchZ = z;
         }
     }
 
