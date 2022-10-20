@@ -14,8 +14,8 @@ public class Board : MonoBehaviour
     [SerializeField] GameObject _settableTile;
     RaycastHit _hit;
     //マスからの移動差(探索に使う)
-    //Key...x, Value...z からの変化値
-    Dictionary<int, int> _checkSet = new Dictionary<int, int>() { {-1, 0}, {-1, 1}, {0, 1}, {1, 1}, {1, 0}, {1, -1}, {0, -1}, {-1, -1} };
+    int[] _checkSetX = new[] { -1, -1, 0, 1, 1, 1, 0, -1 };
+    int[] _checkSetZ = new[] { 0, 1, 1, 1, 0, -1, -1, -1 };
     public GameObject[,] Tiles { get => _tiles; set => _tiles = value; }
 
     // Start is called before the first frame update
@@ -43,6 +43,7 @@ public class Board : MonoBehaviour
         }
         _turn = 2; //オセロは初手黒かららしい
         _beFraTurn = 2;
+        DrawingSettable();
     }
 
     // Update is called once per frame
@@ -51,13 +52,11 @@ public class Board : MonoBehaviour
         //ターンが切り替わったタイミングで、石を置けるマスがあるかどうかを判定する(なかった場合、パスになる)
         if (_turn != _beFraTurn)
         {
-            for (int i = 0; i < 8; i++)
+            foreach (var i in Tiles)
             {
-                for (int j = 0; j < 8; j++)
-                {
-                    SettableCheck(j, i);
-                }
+                i.GetComponent<MeshRenderer>().enabled = false;
             }
+            DrawingSettable();
         }
         _beFraTurn = _turn;
 
@@ -69,17 +68,23 @@ public class Board : MonoBehaviour
                 int x = (int)_hit.collider.gameObject.transform.position.x;
                 int z = (int)_hit.collider.gameObject.transform.position.z;
 
-                if (_turn == 1)
+                if (_boardSettable[x, z] == true)
                 {
-                    _boardState[x, z] = (int)TileState.White;
-                    Instantiate(_white, new Vector3(x, 0.1f, z), _white.transform.rotation);
-                    _turn = 2;
+                    if (_turn == 1)
+                    {
+                        _boardState[x, z] = (int)TileState.White;
+                        Instantiate(_white, new Vector3(x, 0.1f, z), _white.transform.rotation);
+                    }
+                    else
+                    {
+                        _boardState[x, z] = (int)TileState.Black;
+                        Instantiate(_black, new Vector3(x, 0.1f, z), _black.transform.rotation);
+                    }
+                    _turn = _turn == 1 ? 2 : 1; //ターンの切り替え
                 }
                 else
                 {
-                    _boardState[x, z] = (int)TileState.Black;
-                    Instantiate(_black, new Vector3(x, 0.1f, z), _black.transform.rotation);
-                    _turn = 1;
+                    Debug.Log("このマスには置けません");
                 }
             }
         }
@@ -90,29 +95,76 @@ public class Board : MonoBehaviour
     /// </summary>
     /// <param name="x">選んだマスのx座標</param>
     /// <param name="z">選んだマスのz座標</param>
-    bool SettableCheck(int x, int z)
+    void SettableCheck(int x, int z)
     {
-        //白ターン
-        if (_turn == 1)
+        //動けるマスを格納するListをつくる
+        for (int i = 0; i < 8; i++)
         {
-            while (_boardState[x, z] == (int)TileState.Black) //探索先にひっくり返せる可能性のある石がある間実行される
-            {
-                z--;
-            }
-            if (_boardState[x, z] == (int)TileState.White) //石が挟まれているか
-            {
-                _boardSettable[x, z] = true;
-            }
-        }
-        //黒ターン
-        else
-        {
-            while (_boardState[x, z] == (int)TileState.White)
-            {
+            //探索を始めるマス
+            int startX = x;
+            int startZ = z;
+            //探索する方向の情報
+            int checkX = _checkSetX[i];
+            int checkZ = _checkSetZ[i];
 
+            if (_boardState[startX, startZ] == (int)TileState.None) //置けるマスは石を置いていないマス
+            {
+                x += checkX;
+                z += checkZ;
+            }
+            else //石があるマスは探索外
+                break;
+
+            //白ターン
+            if (_turn == 1)
+            {
+                if (!(0 <= x && x < 8 && 0 <= z && z < 8)) //探索するマスの進行方向が盤面の範囲外なら探索しない
+                    break;
+
+                while (_boardState[x, z] == (int)TileState.Black) //探索先にひっくり返せる可能性のある石がある間実行される
+                {
+                    x += checkX;
+                    z += checkZ;
+                }
+
+                if (_boardState[x, z] == (int)TileState.White) //石が挟まれているか
+                {
+                    _boardSettable[startX, startZ] = true;
+                }
+            }
+            //黒ターン
+            else
+            {
+                if (!(0 <= x && x < 8 && 0 <= z && z < 8)) //探索するマスの進行方向が盤面の範囲外なら探索しない
+                    break;
+
+                while (_boardState[x, z] == (int)TileState.White)
+                {
+                    x += checkX;
+                    z += checkZ;
+                }
+
+                if (_boardState[x, z] == (int)TileState.Black) //石が挟まれているか
+                {
+                    _boardSettable[startX, startZ] = true;
+                }
             }
         }
-        return false;
+    }
+
+    void DrawingSettable()
+    {
+        for (int i = 0; i < 8; i++)
+        {
+            for (int j = 0; j < 8; j++)
+            {
+                SettableCheck(j, i);
+                if (_boardSettable[i, j] == true)
+                {
+                    Tiles[i, j].GetComponent<MeshRenderer>().enabled = true;
+                }
+            }
+        }
     }
 
     enum TileState
