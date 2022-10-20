@@ -52,9 +52,14 @@ public class Board : MonoBehaviour
         //ターンが切り替わったタイミングで、石を置けるマスがあるかどうかを判定する(なかった場合、パスになる)
         if (_turn != _beFraTurn)
         {
-            foreach (var i in Tiles)
+            //ここで配置可能マスの探索リセット
+            for (int i = 0; i < 8; i++)
             {
-                i.GetComponent<MeshRenderer>().enabled = false;
+                for (int j = 0; j < 8; j++)
+                {
+                    _boardSettable[i, j] = false;
+                    Tiles[i, j].GetComponent<MeshRenderer>().enabled = false;
+                }
             }
             DrawingSettable();
         }
@@ -97,9 +102,10 @@ public class Board : MonoBehaviour
     /// <param name="z">選んだマスのz座標</param>
     void SettableCheck(int x, int z)
     {
-        //動けるマスを格納するListをつくる
         for (int i = 0; i < 8; i++)
         {
+            //ひっくり返せる石がいくつあったか
+            int count = 0;
             //探索を始めるマス
             int startX = x;
             int startZ = z;
@@ -121,13 +127,14 @@ public class Board : MonoBehaviour
                 if (!(0 <= x && x < 8 && 0 <= z && z < 8)) //探索するマスの進行方向が盤面の範囲外なら探索しない
                     break;
 
-                while (_boardState[x, z] == (int)TileState.Black) //探索先にひっくり返せる可能性のある石がある間実行される
+                while (_boardState[x, z] == (int)TileState.Black) //探索先にひっくり返せる石がある間実行される
                 {
                     x += checkX;
                     z += checkZ;
+                    count++;
                 }
 
-                if (_boardState[x, z] == (int)TileState.White) //石が挟まれているか
+                if (_boardState[x, z] == (int)TileState.White && count != 0) //石が挟まれているか
                 {
                     _boardSettable[startX, startZ] = true;
                 }
@@ -142,9 +149,10 @@ public class Board : MonoBehaviour
                 {
                     x += checkX;
                     z += checkZ;
+                    count++;
                 }
 
-                if (_boardState[x, z] == (int)TileState.Black) //石が挟まれているか
+                if (_boardState[x, z] == (int)TileState.Black && count != 0) //石が挟まれているか
                 {
                     _boardSettable[startX, startZ] = true;
                 }
