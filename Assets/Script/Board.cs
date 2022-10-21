@@ -83,10 +83,7 @@ public class Board : MonoBehaviour
                 int z = (int)hit.collider.gameObject.transform.position.z;
 
                 if (_boardSettable[x, z] == true)
-                {
                     _check.SwitchCheck(x, z);
-                    Turn = Turn == 1 ? 2 : 1; //ターンの切り替え(白→黒 or 黒→白)
-                }
                 else
                     Debug.Log("このマスには置けません");
             }
@@ -103,9 +100,9 @@ public class Board : MonoBehaviour
             for (int j = 0; j < 8; j++)
             {
                 SettableCheck(j, i);
-                if (_boardSettable[i, j] == true)
+                if (_boardSettable[j, i] == true)
                 {
-                    Tiles[i, j].GetComponent<MeshRenderer>().enabled = true;
+                    Tiles[j, i].GetComponent<MeshRenderer>().enabled = true;
                 }
             }
         }

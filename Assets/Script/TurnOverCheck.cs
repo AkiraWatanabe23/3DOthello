@@ -75,6 +75,7 @@ public class TurnOverCheck : MonoBehaviour
             _board.Stones[switchPos.switchX, switchPos.switchZ]
                 = Instantiate(setting, new Vector3(switchPos.switchX, 0.1f, switchPos.switchZ), setting.transform.rotation);
         }
+        _board.Turn = _board.Turn == 1 ? 2 : 1; //ƒ^[ƒ“‚ÌØ‚è‘Ö‚¦(”’¨• or •¨”’)
     }
 
     public struct SwitchColor
