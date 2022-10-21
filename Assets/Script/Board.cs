@@ -202,40 +202,18 @@ public class Board : MonoBehaviour
                 z += CheckSetZ[i];
             }
 
-            //白ターン
-            if (_turn == 1)
+            if (!(0 <= x && x < 8 && 0 <= z && z < 8)) //探索するマスの進行方向が盤面の範囲外なら探索しない
+                break;
+
+            while (_boardState[x, z] == (_turn == 1 ? (int)TileState.Black : (int)TileState.White)) //探索先にひっくり返せる石がある間実行される
             {
-                if (!(0 <= x && x < 8 && 0 <= z && z < 8)) //探索するマスの進行方向が盤面の範囲外なら探索しない
-                    break;
-
-                while (_boardState[x, z] == (int)TileState.Black) //探索先にひっくり返せる石がある間実行される
-                {
-                    Switchable.Add(new SwitchColor(x, z));
-                    x += CheckSetX[i];
-                    z += CheckSetZ[i];
-                }
-
-                if (_boardState[x, z] == (int)TileState.White) //石が挟まれているか
+                Switchable.Add(new SwitchColor(x, z));
+                x += CheckSetX[i];
+                z += CheckSetZ[i];
+                if (_boardState[x, z] == (_turn == 1 ? (int)TileState.White : (int)TileState.Black)) //石が挟まれているか
                 {
                     TurnOver(setting);
-                }
-            }
-            //黒ターン
-            else
-            {
-                if (!(0 <= x && x < 8 && 0 <= z && z < 8)) //探索するマスの進行方向が盤面の範囲外なら探索しない
                     break;
-
-                while (_boardState[x, z] == (int)TileState.White)
-                {
-                    Switchable.Add(new SwitchColor(x, z));
-                    x += CheckSetX[i];
-                    z += CheckSetZ[i];
-                }
-
-                if (_boardState[x, z] == (int)TileState.Black) //石が挟まれているか
-                {
-                    TurnOver(setting);
                 }
             }
         }
