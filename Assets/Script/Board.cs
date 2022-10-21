@@ -187,20 +187,9 @@ public class Board : MonoBehaviour
         //石を置くマス
         int startX = x;
         int startZ = z;
-
         GameObject setting;
-        if (_turn == 1)
-        {
-            _boardState[x, z] = (int)TileState.White;
-            setting = _white;
-        }
-        else
-        {
-            _boardState[x, z] = (int)TileState.Black;
-            setting = _black;
-        }
-        //選んだマスに石を置く
-        Stones[x, z] = Instantiate(setting, new Vector3(x, 0.1f, z), setting.transform.rotation);
+
+        setting = _turn == 1 ? _white : _black;
         //ひっくり返す
         for (int i = 0; i < 8; i++)
         {
@@ -239,7 +228,6 @@ public class Board : MonoBehaviour
 
                 while (_boardState[x, z] == (int)TileState.White)
                 {
-                    Debug.Log(Switchable.Count);
                     Switchable.Add(new SwitchColor(x, z));
                     x += CheckSetX[i];
                     z += CheckSetZ[i];
@@ -251,14 +239,16 @@ public class Board : MonoBehaviour
                 }
             }
         }
+        //選んだマスに石を置く
+        _boardState[x, z] = _turn == 1 ? (int)TileState.White : (int)TileState.Black;
+        Stones[x, z] = Instantiate(setting, new Vector3(startX, 0.1f, startZ), setting.transform.rotation);
     }
 
     void TurnOver(GameObject setting)
     {
-        //ひっくり返す(っぽい)処理
+        //ひっくり返す処理
         for (int i = 0; i < Switchable.Count; i++)
         {
-            Debug.Log("aaa");
             SwitchColor switchPos = Switchable[i];
             Destroy(Stones[switchPos.switchX, switchPos.switchZ]);
             Stones[switchPos.switchX, switchPos.switchZ]
