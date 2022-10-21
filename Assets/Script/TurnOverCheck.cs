@@ -62,7 +62,7 @@ public class TurnOverCheck : MonoBehaviour
         }
         //選んだマスに石を置く
         _board.BoardState[x, z] = _board.Turn == 1 ? 1 : 2;
-        _board.Stones[x, z] = Instantiate(setting, new Vector3(startX, 0.1f, startZ), setting.transform.rotation);
+        _board.Stones[x, z] = Instantiate(setting, new Vector3(startX, 0.1f, startZ), Quaternion.identity);
     }
 
     void TurnOver(GameObject setting)
@@ -73,7 +73,7 @@ public class TurnOverCheck : MonoBehaviour
             SwitchColor switchPos = Switchable[i];
             Destroy(_board.Stones[switchPos.switchX, switchPos.switchZ]);
             _board.Stones[switchPos.switchX, switchPos.switchZ]
-                = Instantiate(setting, new Vector3(switchPos.switchX, 0.1f, switchPos.switchZ), setting.transform.rotation);
+                = Instantiate(setting, new Vector3(switchPos.switchX, 0.1f, switchPos.switchZ), Quaternion.identity);
         }
         _board.Turn = _board.Turn == 1 ? 2 : 1; //ターンの切り替え(白→黒 or 黒→白)
     }

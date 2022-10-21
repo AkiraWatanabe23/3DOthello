@@ -33,19 +33,19 @@ public class Board : MonoBehaviour
         {
             for (int j = 0; j < 8; j++)
             {
-                Tiles[i, j] = Instantiate(_settableTile, new Vector3(i, 0.1f, j), _settableTile.transform.rotation);
+                Tiles[j, i] = Instantiate(_settableTile, new Vector3(j, 0.1f, i), Quaternion.identity);
                 if ((i == 3 && j == 4) || (i == 4 && j == 3)) //白石の初期配置
                 {
-                    BoardState[i, j] = (int)TileState.White;
-                    Stones[i, j] = Instantiate(_white, new Vector3(i, 0.1f, j), _white.transform.rotation);
+                    BoardState[j, i] = (int)TileState.White;
+                    Stones[j, i] = Instantiate(_white, new Vector3(j, 0.1f, i), Quaternion.identity);
                 }
                 else if ((i == 3 && j == 3) || (i == 4 && j == 4)) //黒石の初期配置
                 {
-                    BoardState[i, j] = (int)TileState.Black;
-                    Stones[i, j] = Instantiate(_black, new Vector3(i, 0.1f, j), _black.transform.rotation);
+                    BoardState[j, i] = (int)TileState.Black;
+                    Stones[j, i] = Instantiate(_black, new Vector3(j, 0.1f, i), Quaternion.identity);
                 }
                 else
-                    BoardState[i, j] = (int)TileState.None;
+                    BoardState[j, i] = (int)TileState.None;
             }
         }
         Turn = 2; //オセロは初手黒かららしい
