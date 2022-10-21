@@ -8,7 +8,6 @@ public class Board : MonoBehaviour
     bool[,] _boardSettable = new bool[8, 8]; //置けるマスはtrueを返すことで、配置の可否を判断する
     GameObject[,] _stones = new GameObject[8, 8];
     GameObject[,] _tiles = new GameObject[8, 8];
-    [Tooltip("1...白, 2...黒"), SerializeField] int _turn = 0;
     int _beFraTurn = 0;
     [SerializeField] GameObject _white;
     [SerializeField] GameObject _black;
@@ -16,16 +15,19 @@ public class Board : MonoBehaviour
     //マスからの移動差(探索に使う)
     int[] _checkSetX = new[] { -1, -1, 0, 1, 1, 1, 0, -1 };
     int[] _checkSetZ = new[] { 0, 1, 1, 1, 0, -1, -1, -1 };
-    List<SwitchColor> _switchable = new();
+    TurnOverCheck _check;
+    public int[,] BoardState { get => _boardState; set => _boardState = value; }
+    /// <summary> 1...白, 2...黒 </summary>
+    public int Turn { get; set; }
     public GameObject[,] Stones { get => _stones; set => _stones = value; }
     public GameObject[,] Tiles { get => _tiles; set => _tiles = value; }
     public int[] CheckSetX { get => _checkSetX; set => _checkSetX = value; }
     public int[] CheckSetZ { get => _checkSetZ; set => _checkSetZ = value; }
-    public List<SwitchColor> Switchable { get => _switchable; set => _switchable = value; }
 
     // Start is called before the first frame update
     void Start()
     {
+        _check = GetComponent<TurnOverCheck>();
         //初期設定(中央に石を配置した状態まで)
         for (int i = 0; i < 8; i++)
         {
@@ -34,19 +36,19 @@ public class Board : MonoBehaviour
                 Tiles[i, j] = Instantiate(_settableTile, new Vector3(i, 0.1f, j), _settableTile.transform.rotation);
                 if ((i == 3 && j == 4) || (i == 4 && j == 3)) //白石の初期配置
                 {
-                    _boardState[i, j] = (int)TileState.White;
+                    BoardState[i, j] = (int)TileState.White;
                     Stones[i, j] = Instantiate(_white, new Vector3(i, 0.1f, j), _white.transform.rotation);
                 }
                 else if ((i == 3 && j == 3) || (i == 4 && j == 4)) //黒石の初期配置
                 {
-                    _boardState[i, j] = (int)TileState.Black;
+                    BoardState[i, j] = (int)TileState.Black;
                     Stones[i, j] = Instantiate(_black, new Vector3(i, 0.1f, j), _black.transform.rotation);
                 }
                 else
-                    _boardState[i, j] = (int)TileState.None;
+                    BoardState[i, j] = (int)TileState.None;
             }
         }
-        _turn = 2; //オセロは初手黒かららしい
+        Turn = 2; //オセロは初手黒かららしい
         _beFraTurn = 2;
         SettableDrawing();
     }
@@ -56,7 +58,7 @@ public class Board : MonoBehaviour
     {
         //ターンが切り替わったタイミングで、石を置けるマスがあるかどうかを判定する(なかった場合、パスになる)
         //この部分の処理で置けるマスを明示的にする
-        if (_turn != _beFraTurn)
+        if (Turn != _beFraTurn)
         {
             //ここで配置可能マスの探索リセット
             for (int i = 0; i < 8; i++)
@@ -68,7 +70,7 @@ public class Board : MonoBehaviour
                 }
             }
             SettableDrawing();
-            _beFraTurn = _turn;
+            _beFraTurn = Turn;
         }
 
         //空いているマスに石を置く処理
@@ -82,13 +84,11 @@ public class Board : MonoBehaviour
 
                 if (_boardSettable[x, z] == true)
                 {
-                    TurnOverCheck(x, z);
-                    _turn = _turn == 1 ? 2 : 1; //ターンの切り替え(白ターンなら黒に、黒ターンなら白に)
+                    _check.SwitchCheck(x, z);
+                    Turn = Turn == 1 ? 2 : 1; //ターンの切り替え(白→黒 or 黒→白)
                 }
                 else
-                {
                     Debug.Log("このマスには置けません");
-                }
             }
         }
     }
@@ -129,7 +129,7 @@ public class Board : MonoBehaviour
             x = startX;
             z = startZ;
 
-            if (_boardState[startX, startZ] == (int)TileState.None) //置けるマスは石を置いていないマス
+            if (BoardState[startX, startZ] == (int)TileState.None) //置けるマスは石を置いていないマス
             {
                 x += CheckSetX[i];
                 z += CheckSetZ[i];
@@ -138,19 +138,19 @@ public class Board : MonoBehaviour
                 break;
 
             //白ターン
-            if (_turn == 1)
+            if (Turn == 1)
             {
                 if (!(0 <= x && x < 8 && 0 <= z && z < 8)) //探索するマスの進行方向が盤面の範囲外なら探索しない
                     break;
 
-                while (_boardState[x, z] == (int)TileState.Black) //探索先にひっくり返せる石がある間実行される
+                while (BoardState[x, z] == (int)TileState.Black) //探索先にひっくり返せる石がある間実行される
                 {
                     x += CheckSetX[i];
                     z += CheckSetZ[i];
                     count++;
                 }
 
-                if (_boardState[x, z] == (int)TileState.White && count != 0) //石が挟まれているか
+                if (BoardState[x, z] == (int)TileState.White && count != 0) //石が挟まれているか
                 {
                     _boardSettable[startX, startZ] = true;
                 }
@@ -161,14 +161,14 @@ public class Board : MonoBehaviour
                 if (!(0 <= x && x < 8 && 0 <= z && z < 8))
                     break;
 
-                while (_boardState[x, z] == (int)TileState.White)
+                while (BoardState[x, z] == (int)TileState.White)
                 {
                     x += CheckSetX[i];
                     z += CheckSetZ[i];
                     count++;
                 }
 
-                if (_boardState[x, z] == (int)TileState.Black && count != 0) //石が挟まれているか
+                if (BoardState[x, z] == (int)TileState.Black && count != 0) //石が挟まれているか
                 {
                     _boardSettable[startX, startZ] = true;
                 }
@@ -176,76 +176,7 @@ public class Board : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// 選んだマスを基準に、どの石をひっくり返すかを調べる
-    /// </summary>
-    /// <param name="x">石を置くマスのx座標</param>
-    /// <param name="z">石を置くマスのz座標</param>
-    void TurnOverCheck(int x, int z)
-    {
-        Switchable.Clear();
-        //石を置くマス
-        int startX = x;
-        int startZ = z;
-        GameObject setting;
-
-        setting = _turn == 1 ? _white : _black;
-        //ひっくり返す
-        for (int i = 0; i < 8; i++)
-        {
-            x = startX;
-            z = startZ;
-
-            if (_boardState[startX, startZ] == (int)TileState.None) //選んだマスは必ず石を置いていないマスである
-            {
-                x += CheckSetX[i];
-                z += CheckSetZ[i];
-            }
-
-            if (!(0 <= x && x < 8 && 0 <= z && z < 8)) //探索するマスの進行方向が盤面の範囲外なら探索しない
-                break;
-
-            while (_boardState[x, z] == (_turn == 1 ? (int)TileState.Black : (int)TileState.White)) //探索先にひっくり返せる石がある間実行される
-            {
-                Switchable.Add(new SwitchColor(x, z));
-                x += CheckSetX[i];
-                z += CheckSetZ[i];
-                if (_boardState[x, z] == (_turn == 1 ? (int)TileState.White : (int)TileState.Black)) //石が挟まれているか
-                {
-                    TurnOver(setting);
-                    break;
-                }
-            }
-        }
-        //選んだマスに石を置く
-        _boardState[x, z] = _turn == 1 ? (int)TileState.White : (int)TileState.Black;
-        Stones[x, z] = Instantiate(setting, new Vector3(startX, 0.1f, startZ), setting.transform.rotation);
-    }
-
-    void TurnOver(GameObject setting)
-    {
-        //ひっくり返す処理
-        for (int i = 0; i < Switchable.Count; i++)
-        {
-            SwitchColor switchPos = Switchable[i];
-            Destroy(Stones[switchPos.switchX, switchPos.switchZ]);
-            Stones[switchPos.switchX, switchPos.switchZ]
-                = Instantiate(setting, new Vector3(switchPos.switchX, 0.1f, switchPos.switchZ), setting.transform.rotation);
-        }
-    }
-
-    public struct SwitchColor
-    {
-        public int switchX;
-        public int switchZ;
-        public SwitchColor(int x, int z)
-        {
-            switchX = x;
-            switchZ = z;
-        }
-    }
-
-    enum TileState
+    public enum TileState
     {
         None = 0,
         White,
