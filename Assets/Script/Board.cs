@@ -115,7 +115,7 @@ public class Board : MonoBehaviour
     /// <param name="z">選んだマスのz座標</param>
     void SettableCheck(int x, int z)
     {
-        for (int i = 0; i < 8; i++)
+        for (int n = 0; n < 8; n++)
         {
             //ひっくり返せる石がいくつあったか
             int count = 0;
@@ -128,8 +128,8 @@ public class Board : MonoBehaviour
 
             if (BoardState[startX, startZ] == (int)TileState.None) //置けるマスは石を置いていないマス
             {
-                x += CheckSetX[i];
-                z += CheckSetZ[i];
+                x += CheckSetX[n];
+                z += CheckSetZ[n];
             }
             else //石があるマスは探索外
                 break;
@@ -142,8 +142,8 @@ public class Board : MonoBehaviour
 
                 while (BoardState[x, z] == (int)TileState.Black) //探索先にひっくり返せる石がある間実行される
                 {
-                    x += CheckSetX[i];
-                    z += CheckSetZ[i];
+                    x += CheckSetX[n];
+                    z += CheckSetZ[n];
                     count++;
                 }
 
@@ -160,8 +160,8 @@ public class Board : MonoBehaviour
 
                 while (BoardState[x, z] == (int)TileState.White)
                 {
-                    x += CheckSetX[i];
-                    z += CheckSetZ[i];
+                    x += CheckSetX[n];
+                    z += CheckSetZ[n];
                     count++;
                 }
 

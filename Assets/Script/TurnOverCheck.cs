@@ -61,7 +61,7 @@ public class TurnOverCheck : MonoBehaviour
             }
         }
         //選んだマスに石を置く
-        _board.BoardState[x, z] = _board.Turn == 1 ? 1 : 2;
+        _board.BoardState[x, z] = setting == _white ? 1 : 2; //マスの情報の更新
         _board.Stones[x, z] = Instantiate(setting, new Vector3(startX, 0.1f, startZ), Quaternion.identity);
     }
 
