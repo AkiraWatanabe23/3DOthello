@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Board : MonoBehaviour
@@ -24,8 +22,7 @@ public class Board : MonoBehaviour
     public int[] CheckSetX { get => _checkSetX; set => _checkSetX = value; }
     public int[] CheckSetZ { get => _checkSetZ; set => _checkSetZ = value; }
 
-    // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
         _check = GetComponent<TurnOverCheck>();
         //初期設定(中央に石を配置した状態まで)
@@ -48,13 +45,12 @@ public class Board : MonoBehaviour
                     BoardState[j, i] = (int)TileState.None;
             }
         }
-        Turn = 2; //オセロは初手黒かららしい
+        Turn = 2; //オセロは初手黒から
         _beFraTurn = 2;
         SettableDrawing();
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Update()
     {
         //ターンが切り替わったタイミングで、石を置けるマスがあるかどうかを判定する(なかった場合、パスになる)
         //この部分の処理で置けるマスを明示的にする
@@ -83,7 +79,9 @@ public class Board : MonoBehaviour
                 int z = (int)hit.collider.gameObject.transform.position.z;
 
                 if (_boardSettable[x, z] == true)
-                    _check.SwitchCheck(x, z);
+                {
+                    //_check.SwitchCheck(x, z);
+                }
                 else
                     Debug.Log("このマスには置けません");
             }
@@ -93,7 +91,7 @@ public class Board : MonoBehaviour
     /// <summary>
     /// 石を置くことが出来るマスの明示的な表示
     /// </summary>
-    void SettableDrawing()
+    private void SettableDrawing()
     {
         for (int i = 0; i < 8; i++)
         {
@@ -113,7 +111,7 @@ public class Board : MonoBehaviour
     /// </summary>
     /// <param name="x">選んだマスのx座標</param>
     /// <param name="z">選んだマスのz座標</param>
-    void SettableCheck(int x, int z)
+    private void SettableCheck(int x, int z)
     {
         for (int n = 0; n < 8; n++)
         {
