@@ -40,6 +40,10 @@ public class ObjectPool : MonoBehaviour
                 SetBoard(new Vector3(i, 0, j));
             }
         }
+        SetWhite(new Vector3(3, 0.1f, 3));
+        SetWhite(new Vector3(4, 0.1f, 4));
+        SetBlack(new Vector3(3, 0.1f, 4));
+        SetBlack(new Vector3(4, 0.1f, 3));
     }
 
     private void SetBoard(Vector3 pos)

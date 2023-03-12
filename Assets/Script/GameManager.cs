@@ -15,6 +15,7 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
+        //盤面の初期設定
         for (int x = 0; x < 10; x++)
         {
             for (int y = 0; y < 10; y++)
