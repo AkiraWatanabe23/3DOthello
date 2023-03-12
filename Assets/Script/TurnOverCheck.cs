@@ -41,6 +41,5 @@ public class TurnOverCheck
     private void FlipStone(int[,] board, int x, int y, int color)
     {
         board[x, y] = color;
-
     }
 }
