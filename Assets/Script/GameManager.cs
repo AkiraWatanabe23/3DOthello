@@ -3,8 +3,8 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    [SerializeField] private Reversi _reversi = new();
-    [SerializeField] private TurnOverCheck _checking = new();
+    private Reversi _reversi = new();
+    private TurnOverCheck _checking = new();
 
     private int[,] _board = new int[10, 10];
     private int _turnCount = 0;
