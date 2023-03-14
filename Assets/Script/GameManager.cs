@@ -8,7 +8,7 @@ public class GameManager : MonoBehaviour
 
     private Reversi _reversi = new();
     private TurnOverCheck _checking = new();
-    private ObjectPool _pool = new();
+    private ObjectPool _pool = default;
 
     private int[,] _board = new int[10, 10];
     private int _turnCount = 0;
@@ -17,7 +17,7 @@ public class GameManager : MonoBehaviour
     private bool[,] _movablePos = new bool[10, 10];
     private int[,] _movableDir = new int[10, 10];
 
-    public int[,] Board { get => _board; protected set => _board = value; }
+    public int[,] Board { get => _board; set => _board = value; }
     public int TurnCount { get => _turnCount; set => _turnCount = value; }
     public int CurrentColor { get => _currentColor; set => _currentColor = value; }
     public bool[,] MovablePos { get => _movablePos; protected set => _movablePos = value; }
@@ -61,7 +61,7 @@ public class GameManager : MonoBehaviour
     }
 
     /// <summary> 盤面の表示更新 </summary>
-    private void Display()
+    public void Display()
     {
         for (int x = 1; x < Consts.BOARD_SIZE + 1; x++)
         {

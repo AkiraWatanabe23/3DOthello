@@ -1,4 +1,6 @@
 using Constants;
+using System.Diagnostics;
+using UnityEngine;
 
 [System.Serializable]
 public class TurnOverCheck
@@ -136,18 +138,135 @@ public class TurnOverCheck
     public bool SetStone(bool[,] pos, int x, int y)
     {
         if (x < 1 || Consts.BOARD_SIZE < x)
+        {
+            UnityEngine.Debug.Log(x);
             return false;
-        if (y < 1 || Consts.BOARD_SIZE > y)
+        }
+        if (y < 1 || Consts.BOARD_SIZE < y)
+        {
+            UnityEngine.Debug.Log(y);
             return false;
+        }
         if (pos[x, y] == false)
+        {
+            UnityEngine.Debug.Log($"{x}, {y}");
             return false;
+        }
 
         return true;
     }
 
     /// <summary> 石を置き、盤面に反映する </summary>
-    public void FlipStone(int[,] board, int x, int y, int color)
+    public int[,] FlipStone(int[,] movable, int x, int y, int color)
     {
+        int[,] board = new int[8, 8];
         board[x, y] = color;
+
+        int setDir = movable[x, y];
+
+        //左
+        if ((setDir & Consts.LEFT) == 1)
+        {
+            int checkX = x - 1;
+
+            while (board[checkX, y] == -color)
+            {
+                board[checkX, y] = color;
+                checkX--;
+            }
+        }
+
+        //左上
+        if ((setDir & Consts.UPPER_LEFT) == 1)
+        {
+            int checkX = x - 1;
+            int checkY = y - 1;
+
+            while (board[checkX, checkY] == -color)
+            {
+                board[checkX, checkY] = color;
+                checkX--;
+                checkY--;
+            }
+        }
+
+        //上
+        if ((setDir & Consts.UPPER) == 1)
+        {
+            int checkY = y - 1;
+
+            while (board[x, checkY] == -color)
+            {
+                board[x, checkY] = color;
+                checkY--;
+            }
+        }
+
+        //右上
+        if ((setDir & Consts.UPPER_RIGHT) == 1)
+        {
+            int checkX = x + 1;
+            int checkY = y - 1;
+
+            while (board[checkX, checkY] == -color)
+            {
+                board[checkX, checkY] = color;
+                checkX++;
+                checkY--;
+            }
+        }
+
+        //右
+        if ((setDir & Consts.RIGHT) == 1)
+        {
+            int checkX = x + 1;
+
+            while (board[checkX, y] == -color)
+            {
+                board[checkX, y] = color;
+                checkX++;
+            }
+        }
+
+        //右下
+        if ((setDir & Consts.LOWER_RIGHT) == 1)
+        {
+            int checkX = x + 1;
+            int checkY = y + 1;
+
+            while (board[checkX, checkY] == -color)
+            {
+                board[checkX, y] = color;
+                checkX++;
+                checkY++;
+            }
+        }
+
+        //下
+        if ((setDir & Consts.LOWER) == 1)
+        {
+            int checkY = y + 1;
+
+            while (board[x, checkY] == -color)
+            {
+                board[x, checkY] = color;
+                checkY++;
+            }
+        }
+
+        //左下
+        if ((setDir & Consts.LOWER_LEFT) == 1)
+        {
+            int checkX = x - 1;
+            int checkY = y + 1;
+
+            while (board[checkX, checkY] == -color)
+            {
+                board[x, checkY] = color;
+                checkX--;
+                checkY++;
+            }
+        }
+        return board;
     }
 }

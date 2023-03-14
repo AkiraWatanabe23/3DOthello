@@ -19,6 +19,7 @@ public class InputTest : MonoBehaviour
     {
         string input = _input.text;
         Debug.Log(input + "を選択しました");
+
         if (input == "e")
         {
             Debug.Log("中断");
@@ -32,8 +33,11 @@ public class InputTest : MonoBehaviour
 
             if (_checking.SetStone(_manager.MovablePos, x, y))
             {
-                _checking.FlipStone(_manager.Board, x, y, _manager.CurrentColor);
+                Debug.Log("true");
 
+                _manager.Board = _checking.FlipStone(_manager.Board, x, y, _manager.CurrentColor);
+
+                _manager.Display();
                 _manager.TurnCount++;
                 _manager.CurrentColor = -_manager.CurrentColor;
 
