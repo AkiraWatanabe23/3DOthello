@@ -1,32 +1,21 @@
 ﻿using Constants;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
-public class GameManager : MonoBehaviour
+public class GameManager : MonoBehaviour, IPointerClickHandler
 {
     [SerializeField] private Reversi _reversi = new();
     [SerializeField] private TurnOverCheck _checking = new();
 
-    private int[,] _board = new int[8, 8];
+    private int[,] _board = new int[10, 10];
     private int _turnCount = 0;
     private int _currentColor = Consts.BLACK;
 
-    private bool[,] _movablePos = new bool[8, 8];
-    private int[,] _movableDir = new int[8, 8];
+    private bool[,] _movablePos = new bool[10, 10];
+    private int[,] _movableDir = new int[10, 10];
 
     private void Awake()
     {
-        //盤面の初期設定
-        for (int x = 0; x < 10; x++)
-        {
-            for (int y = 0; y < 10; y++)
-            {
-                if (x == 0 || x == 9 ||
-                    y == 0 || y == 9)
-                {
-                    _board[x, y] = Consts.WALL;
-                }
-            }
-        }
         _board[4, 4] = Consts.WHITE;
         _board[5, 5] = Consts.WHITE;
         _board[4, 5] = Consts.BLACK;
@@ -35,7 +24,7 @@ public class GameManager : MonoBehaviour
         _turnCount = 0;
         _currentColor = Consts.BLACK;
 
-        _checking.Awake(_board, _currentColor, _turnCount, _movablePos, _movableDir);
+        ResetMovables();
     }
 
     private void Start()
@@ -46,5 +35,42 @@ public class GameManager : MonoBehaviour
     private void Update()
     {
         
+    }
+
+    private void ResetMovables()
+    {
+        for (int i = 1; i < 9; i++)
+        {
+            for (int j = 1; j < 9; j++)
+            {
+                _movablePos[i, j] = false;
+            }
+        }
+
+        for (int x = 1; x < Consts.BOARD_SIZE + 1; x++)
+        {
+            for (int y = 1; y < Consts.BOARD_SIZE + 1; y++)
+            {
+                int moveDir = _checking.MovableCheck(_board, x, y, _currentColor);
+                _movableDir[x, y] = moveDir;
+
+                if (moveDir != 0)
+                {
+                    _movablePos[x, y] = true;
+                }
+            }
+        }
+    }
+
+    /// <summary> 盤面の表示更新 </summary>
+    private void Display()
+    {
+
+    }
+
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        GameObject go = eventData.pointerCurrentRaycast.gameObject;
+        Debug.Log("yes");
     }
 }
