@@ -1,8 +1,7 @@
 ﻿using Constants;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
-public class GameManager : MonoBehaviour, IPointerClickHandler
+public class GameManager : MonoBehaviour
 {
     [SerializeField] private Reversi _reversi = new();
     [SerializeField] private TurnOverCheck _checking = new();
@@ -66,11 +65,5 @@ public class GameManager : MonoBehaviour, IPointerClickHandler
     private void Display()
     {
 
-    }
-
-    public void OnPointerClick(PointerEventData eventData)
-    {
-        GameObject go = eventData.pointerCurrentRaycast.gameObject;
-        Debug.Log("yes");
     }
 }
