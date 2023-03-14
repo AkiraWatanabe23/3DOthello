@@ -5,6 +5,7 @@ public class GameManager : MonoBehaviour
 {
     private Reversi _reversi = new();
     private TurnOverCheck _checking = new();
+    private ObjectPool _pool = new();
 
     private int[,] _board = new int[10, 10];
     private int _turnCount = 0;
@@ -24,16 +25,6 @@ public class GameManager : MonoBehaviour
         _currentColor = Consts.BLACK;
 
         ResetMovables();
-    }
-
-    private void Start()
-    {
-        
-    }
-
-    private void Update()
-    {
-        
     }
 
     private void ResetMovables()
@@ -64,6 +55,19 @@ public class GameManager : MonoBehaviour
     /// <summary> 盤面の表示更新 </summary>
     private void Display()
     {
-
+        for (int x = 1; x < Consts.BOARD_SIZE + 1; x++)
+        {
+            for (int y = 1; y < Consts.BOARD_SIZE + 1; y++)
+            {
+                if (_board[x, y] == Consts.WHITE)
+                {
+                    _pool.SetWhite(new Vector3(x, 0.1f, y));
+                }
+                else if (_board[x, y] == Consts.BLACK)
+                {
+                    _pool.SetBlack(new Vector3(x, 0.1f, y));
+                }
+            }
+        }
     }
 }

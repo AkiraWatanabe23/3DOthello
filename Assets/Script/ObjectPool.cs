@@ -62,7 +62,7 @@ public class ObjectPool : MonoBehaviour
         }
     }
 
-    private void SetWhite(Vector3 pos)
+    public void SetWhite(Vector3 pos)
     {
         //オブジェクトのList内から、非アクティブなものを検索する
         foreach (var obj in _white)
@@ -78,7 +78,7 @@ public class ObjectPool : MonoBehaviour
         }
     }
 
-    private void SetBlack(Vector3 pos)
+    public void SetBlack(Vector3 pos)
     {
         foreach (var obj in _black)
         {
