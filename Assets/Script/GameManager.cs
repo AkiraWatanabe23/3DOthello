@@ -1,8 +1,11 @@
 ﻿using Constants;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
+    [SerializeField] private InputField _input = default;
+
     private Reversi _reversi = new();
     private TurnOverCheck _checking = new();
     private ObjectPool _pool = new();
@@ -13,6 +16,11 @@ public class GameManager : MonoBehaviour
 
     private bool[,] _movablePos = new bool[10, 10];
     private int[,] _movableDir = new int[10, 10];
+
+    public int[,] Board { get => _board; protected set => _board = value; }
+    public int TurnCount { get => _turnCount; set => _turnCount = value; }
+    public int CurrentColor { get => _currentColor; set => _currentColor = value; }
+    public bool[,] MovablePos { get => _movablePos; protected set => _movablePos = value; }
 
     private void Awake()
     {
@@ -27,7 +35,7 @@ public class GameManager : MonoBehaviour
         ResetMovables();
     }
 
-    private void ResetMovables()
+    public void ResetMovables()
     {
         for (int i = 1; i < 9; i++)
         {

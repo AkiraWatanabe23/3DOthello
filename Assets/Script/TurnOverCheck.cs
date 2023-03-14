@@ -133,11 +133,13 @@ public class TurnOverCheck
     }
 
     /// <summary> Î‚Ì”z’u </summary>
-    public bool SetStone(int x, int y)
+    public bool SetStone(bool[,] pos, int x, int y)
     {
         if (x < 1 || Consts.BOARD_SIZE < x)
             return false;
         if (y < 1 || Consts.BOARD_SIZE > y)
+            return false;
+        if (pos[x, y] == false)
             return false;
 
         return true;

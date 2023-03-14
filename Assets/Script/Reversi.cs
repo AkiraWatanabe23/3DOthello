@@ -6,9 +6,10 @@ using UnityEngine;
 public class Reversi
 {
     /// <summary> 入力された手が正しいか判定 </summary>
-    public bool InputCorrect(Vector3 pos)
+    public bool InputCorrect(string input)
     {
-        if (Consts.INPUT_NUMBER.Contains((char)pos.x))
+        if (Consts.INPUT_ALPHABET.Contains(input[0]) &&
+            Consts.INPUT_NUMBER.Contains(input[0]))
         {
             return true;
         }
