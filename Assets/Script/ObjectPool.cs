@@ -33,17 +33,17 @@ public class ObjectPool : MonoBehaviour
             _black.Add(black);
         }
 
-        for (int i = 0; i < 8; i++)
+        for (int i = 1; i < 9; i++)
         {
-            for (int j = 0; j < 8; j++)
+            for (int j = 1; j < 9; j++)
             {
                 SetBoard(new Vector3(i, 0, j));
             }
         }
-        SetWhite(new Vector3(3, 0.1f, 3));
         SetWhite(new Vector3(4, 0.1f, 4));
-        SetBlack(new Vector3(3, 0.1f, 4));
-        SetBlack(new Vector3(4, 0.1f, 3));
+        SetWhite(new Vector3(5, 0.1f, 5));
+        SetBlack(new Vector3(4, 0.1f, 5));
+        SetBlack(new Vector3(5, 0.1f, 4));
     }
 
     private void SetBoard(Vector3 pos)

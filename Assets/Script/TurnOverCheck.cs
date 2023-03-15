@@ -1,5 +1,4 @@
 using Constants;
-using System.Diagnostics;
 using UnityEngine;
 
 [System.Serializable]
@@ -138,18 +137,13 @@ public class TurnOverCheck
     public bool SetStone(bool[,] pos, int x, int y)
     {
         if (x < 1 || Consts.BOARD_SIZE < x)
-        {
-            UnityEngine.Debug.Log(x);
             return false;
-        }
         if (y < 1 || Consts.BOARD_SIZE < y)
-        {
-            UnityEngine.Debug.Log(y);
             return false;
-        }
         if (pos[x, y] == false)
         {
-            UnityEngine.Debug.Log($"{x}, {y}");
+            //配列が全てfalseになってる ... これだとダメ
+            Debug.Log($"{x}, {y}");
             return false;
         }
 
@@ -159,7 +153,7 @@ public class TurnOverCheck
     /// <summary> 石を置き、盤面に反映する </summary>
     public int[,] FlipStone(int[,] movable, int x, int y, int color)
     {
-        int[,] board = new int[8, 8];
+        int[,] board = new int[10, 10];
         board[x, y] = color;
 
         int setDir = movable[x, y];

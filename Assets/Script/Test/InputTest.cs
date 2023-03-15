@@ -30,6 +30,7 @@ public class InputTest : MonoBehaviour
         {
             int x = Array.IndexOf(Consts.INPUT_ALPHABET, input[0]) + 1;
             int y = Array.IndexOf(Consts.INPUT_NUMBER, input[1]) + 1;
+            //Debug.Log($"{x}, {y}");
 
             if (_checking.SetStone(_manager.MovablePos, x, y))
             {
