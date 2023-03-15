@@ -147,12 +147,12 @@ public class TurnOverCheck
     }
 
     /// <summary> Î‚ğ’u‚«A”Õ–Ê‚É”½‰f‚·‚é </summary>
-    public int[,] FlipStone(int[,] movable, int x, int y, int color)
+    public int[,] FlipStone(int movable, int x, int y, int color)
     {
         int[,] board = new int[10, 10];
         board[x, y] = color;
 
-        int setDir = movable[x, y];
+        int setDir = movable;
 
         //¶
         if ((setDir & Consts.LEFT) == 1)

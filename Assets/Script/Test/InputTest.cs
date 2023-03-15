@@ -34,7 +34,7 @@ public class InputTest : MonoBehaviour
 
             if (_checking.SetStone(_manager.MovablePos, x, 9 - y))
             {
-                _manager.Board = _checking.FlipStone(_manager.Board, x, 9 - y, _manager.CurrentColor);
+                _manager.Board = _checking.FlipStone(_manager.MovableDir[x, 9 - y], x, 9 - y, _manager.CurrentColor);
 
                 _manager.Display();
                 _manager.TurnCount++;
