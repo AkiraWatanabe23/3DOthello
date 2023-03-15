@@ -13,7 +13,7 @@ public class ObjectPool : MonoBehaviour
 
     private const int POOL_SIZE = 64;
 
-    private void Start()
+    private void Awake()
     {
         for (int i = 0; i < POOL_SIZE; i++)
         {

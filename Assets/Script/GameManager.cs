@@ -3,14 +3,15 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    //private readonly Reversi _reversi = new();
     private readonly TurnOverCheck _checking = new();
     private ObjectPool _pool = default;
 
+    //実際の盤面等を示す値
     private int[,] _board = new int[10, 10];
     private int _turnCount = 0;
     private int _currentColor = Consts.BLACK;
 
+    //判定用の配列
     private bool[,] _movablePos = new bool[10, 10];
     private int[,] _movableDir = new int[10, 10];
 
@@ -22,10 +23,10 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
-        _board[4, 5] = Consts.WHITE;
-        _board[5, 4] = Consts.WHITE;
-        _board[4, 4] = Consts.BLACK;
-        _board[5, 5] = Consts.BLACK;
+        _board[4, 4] = Consts.WHITE;
+        _board[5, 5] = Consts.WHITE;
+        _board[4, 5] = Consts.BLACK;
+        _board[5, 4] = Consts.BLACK;
 
         _turnCount = 0;
         _currentColor = Consts.BLACK;
