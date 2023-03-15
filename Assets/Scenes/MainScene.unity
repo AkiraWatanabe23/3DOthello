@@ -386,6 +386,28 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+--- !u!114 &1233412779 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3796517476019684658, guid: 70379f025259f2444808b219e6f897e6, type: 3}
+  m_PrefabInstance: {fileID: 1850082043}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 29dc373773b711f46ac6b2dd90226e84, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1233412782 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1233412782, guid: 70379f025259f2444808b219e6f897e6, type: 3}
+  m_PrefabInstance: {fileID: 1850082043}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 21c31e366ca86d644a34aa546950e7af, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1240865609
 GameObject:
   m_ObjectHideFlags: 0
@@ -558,7 +580,6 @@ GameObject:
   - component: {fileID: 1802751330}
   - component: {fileID: 1802751329}
   - component: {fileID: 1802751328}
-  - component: {fileID: 1802751331}
   m_Layer: 5
   m_Name: PlayerInput
   m_TagString: Untagged
@@ -645,7 +666,7 @@ MonoBehaviour:
   m_OnDidEndEdit:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1802751331}
+      - m_Target: {fileID: 1233412782}
         m_TargetAssemblyTypeName: InputTest, Assembly-CSharp
         m_MethodName: InputMove
         m_Mode: 1
@@ -706,18 +727,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1802751326}
   m_CullTransparentMesh: 1
---- !u!114 &1802751331
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1802751326}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 21c31e366ca86d644a34aa546950e7af, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &1850082043
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -725,6 +734,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1233412782, guid: 70379f025259f2444808b219e6f897e6, type: 3}
+      propertyPath: _input
+      value: 
+      objectReference: {fileID: 1802751328}
     - target: {fileID: 3796517476019684656, guid: 70379f025259f2444808b219e6f897e6, type: 3}
       propertyPath: m_RootOrder
       value: 2
@@ -770,9 +783,9 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3796517476019684657, guid: 70379f025259f2444808b219e6f897e6, type: 3}
-      propertyPath: _input
+      propertyPath: _pool
       value: 
-      objectReference: {fileID: 1802751328}
+      objectReference: {fileID: 1233412779}
     - target: {fileID: 3796517476019684663, guid: 70379f025259f2444808b219e6f897e6, type: 3}
       propertyPath: m_Name
       value: System

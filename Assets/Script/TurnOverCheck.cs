@@ -141,11 +141,7 @@ public class TurnOverCheck
         if (y < 1 || Consts.BOARD_SIZE < y)
             return false;
         if (pos[x, y] == false)
-        {
-            //”z—ñ‚ª‘S‚Äfalse‚É‚È‚Á‚Ä‚é ... ‚±‚ê‚¾‚Æƒ_ƒ
-            Debug.Log($"{x}, {y}");
             return false;
-        }
 
         return true;
     }

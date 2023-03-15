@@ -1,13 +1,10 @@
 ﻿using Constants;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
-    [SerializeField] private InputField _input = default;
-
-    private Reversi _reversi = new();
-    private TurnOverCheck _checking = new();
+    //private readonly Reversi _reversi = new();
+    private readonly TurnOverCheck _checking = new();
     private ObjectPool _pool = default;
 
     private int[,] _board = new int[10, 10];
@@ -21,18 +18,20 @@ public class GameManager : MonoBehaviour
     public int TurnCount { get => _turnCount; set => _turnCount = value; }
     public int CurrentColor { get => _currentColor; set => _currentColor = value; }
     public bool[,] MovablePos { get => _movablePos; protected set => _movablePos = value; }
+    public int[,] MovableDir { get => _movableDir; protected set => _movableDir = value; }
 
     private void Awake()
     {
-        _board[4, 4] = Consts.WHITE;
-        _board[5, 5] = Consts.WHITE;
-        _board[4, 5] = Consts.BLACK;
-        _board[5, 4] = Consts.BLACK;
+        _board[4, 5] = Consts.WHITE;
+        _board[5, 4] = Consts.WHITE;
+        _board[4, 4] = Consts.BLACK;
+        _board[5, 5] = Consts.BLACK;
 
         _turnCount = 0;
         _currentColor = Consts.BLACK;
 
         ResetMovables();
+        _pool = GetComponent<ObjectPool>();
     }
 
     public void ResetMovables()
@@ -55,7 +54,6 @@ public class GameManager : MonoBehaviour
                 if (moveDir != 0)
                 {
                     _movablePos[x, y] = true;
-                    Debug.Log("初期化");
                 }
             }
         }

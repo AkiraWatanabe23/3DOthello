@@ -5,14 +5,15 @@ using UnityEngine.UI;
 
 public class InputTest : MonoBehaviour
 {
-    private GameManager _manager = new();
+    [SerializeField] private InputField _input = default;
+
     private Reversi _reversi = new();
     private TurnOverCheck _checking = new();
-    private InputField _input = default;
+    private GameManager _manager = default;
 
     private void Start()
     {
-        _input = GetComponent<InputField>();
+        _manager = GetComponent<GameManager>();
     }
 
     public void InputMove()
@@ -30,13 +31,10 @@ public class InputTest : MonoBehaviour
         {
             int x = Array.IndexOf(Consts.INPUT_ALPHABET, input[0]) + 1;
             int y = Array.IndexOf(Consts.INPUT_NUMBER, input[1]) + 1;
-            //Debug.Log($"{x}, {y}");
 
-            if (_checking.SetStone(_manager.MovablePos, x, y))
+            if (_checking.SetStone(_manager.MovablePos, x, 9 - y))
             {
-                Debug.Log("true");
-
-                _manager.Board = _checking.FlipStone(_manager.Board, x, y, _manager.CurrentColor);
+                _manager.Board = _checking.FlipStone(_manager.Board, x, 9 - y, _manager.CurrentColor);
 
                 _manager.Display();
                 _manager.TurnCount++;
