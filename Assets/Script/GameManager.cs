@@ -85,6 +85,7 @@ public class GameManager : MonoBehaviour
                     var piece = Consts.FindWithVector(new Vector3(x, 0.1f, 9 - y));
                     if (piece != null)
                         piece.SetActive(false);
+
                     _pool.SetWhite(new Vector3(x, 0.1f, 9 - y));
                 }
                 else if (_board[x, y] == Consts.BLACK)
@@ -92,6 +93,7 @@ public class GameManager : MonoBehaviour
                     var piece = Consts.FindWithVector(new Vector3(x, 0.1f, 9 - y));
                     if (piece != null)
                         piece.SetActive(false);
+
                     _pool.SetBlack(new Vector3(x, 0.1f, 9 - y));
                 }
             }

@@ -1,6 +1,5 @@
 ﻿using Constants;
 using System.Linq;
-using UnityEngine;
 
 [System.Serializable]
 public class Reversi
