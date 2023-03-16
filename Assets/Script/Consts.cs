@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System.Linq;
+using System.Collections.Generic;
+using UnityEngine;
 
 namespace Constants
 {
@@ -31,12 +33,31 @@ namespace Constants
         //手数の上限
         public const int MAX_TURNS = 60;
 
+        public const string WHITE_TAG = "White";
+        public const string BLACK_TAG = "Black";
+
         public static readonly Dictionary<SceneNames, string> Scenes = new()
         {
             [SceneNames.TITLE_SCENE] = "Title",
             [SceneNames.GAME_SCENE] = "MainGame",
             [SceneNames.RESULT_SCENE] = "Result",
         };
+
+        public static GameObject FindWithVector(Vector3 pos)
+        {
+            GameObject find = null;
+
+            foreach (GameObject obj
+                     in Object.FindObjectsOfType(typeof(GameObject)).Cast<GameObject>())
+            {
+                if (pos == obj.transform.position)
+                {
+                    find = obj;
+                    break;
+                }
+            }
+            return find;
+        }
     }
 
     public enum SceneNames

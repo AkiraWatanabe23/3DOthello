@@ -1,4 +1,5 @@
 using Constants;
+using UnityEngine;
 
 [System.Serializable]
 public class TurnOverCheck
@@ -140,15 +141,17 @@ public class TurnOverCheck
         if (y < 1 || Consts.BOARD_SIZE < y)
             return false;
         if (pos[x, y] == false)
+        {
+            Debug.Log($"{x}, {y}");
             return false;
+        }
 
         return true;
     }
 
     /// <summary> Î‚ğ’u‚«A”Õ–Ê‚É”½‰f‚·‚é </summary>
-    public int[,] FlipStone(int movable, int x, int y, int color)
+    public int[,] FlipStone(int[,] board, int movable, int x, int y, int color)
     {
-        int[,] board = new int[10, 10];
         board[x, y] = color;
 
         int setDir = movable;

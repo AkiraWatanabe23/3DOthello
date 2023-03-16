@@ -32,21 +32,9 @@ public class ObjectPool : MonoBehaviour
             _white.Add(white);
             _black.Add(black);
         }
-
-        for (int i = 1; i < 9; i++)
-        {
-            for (int j = 1; j < 9; j++)
-            {
-                SetBoard(new Vector3(i, 0, j));
-            }
-        }
-        SetWhite(new Vector3(4, 0.1f, 5));
-        SetWhite(new Vector3(5, 0.1f, 4));
-        SetBlack(new Vector3(4, 0.1f, 4));
-        SetBlack(new Vector3(5, 0.1f, 5));
     }
 
-    private void SetBoard(Vector3 pos)
+    public void SetBoard(Vector3 pos)
     {
         //オブジェクトのList内から、非アクティブなものを検索する
         foreach (var obj in _tiles)

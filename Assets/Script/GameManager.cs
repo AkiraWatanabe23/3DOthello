@@ -21,7 +21,7 @@ public class GameManager : MonoBehaviour
     public bool[,] MovablePos { get => _movablePos; protected set => _movablePos = value; }
     public int[,] MovableDir { get => _movableDir; protected set => _movableDir = value; }
 
-    private void Awake()
+    private void Start()
     {
         _board[4, 4] = Consts.WHITE;
         _board[5, 5] = Consts.WHITE;
@@ -33,6 +33,19 @@ public class GameManager : MonoBehaviour
 
         ResetMovables();
         _pool = GetComponent<ObjectPool>();
+
+        for (int i = 1; i < Consts.BOARD_SIZE + 1; i++)
+        {
+            for (int j = 1; j < Consts.BOARD_SIZE + 1; j++)
+            {
+                _pool.SetBoard(new Vector3(i, 0, j));
+
+                if (_board[i, j] == Consts.WHITE)
+                    _pool.SetWhite(new Vector3(i, 0.1f, 9 - j));
+                else if (_board[i, j] == Consts.BLACK)
+                    _pool.SetBlack(new Vector3(i, 0.1f, 9 - j));
+            }
+        }
     }
 
     public void ResetMovables()
@@ -69,14 +82,19 @@ public class GameManager : MonoBehaviour
             {
                 if (_board[x, y] == Consts.WHITE)
                 {
-                    _pool.SetWhite(new Vector3(x, 0.1f, y));
+                    var piece = Consts.FindWithVector(new Vector3(x, 0.1f, 9 - y));
+                    if (piece != null)
+                        piece.SetActive(false);
+                    _pool.SetWhite(new Vector3(x, 0.1f, 9 - y));
                 }
                 else if (_board[x, y] == Consts.BLACK)
                 {
-                    _pool.SetBlack(new Vector3(x, 0.1f, y));
+                    var piece = Consts.FindWithVector(new Vector3(x, 0.1f, 9 - y));
+                    if (piece != null)
+                        piece.SetActive(false);
+                    _pool.SetBlack(new Vector3(x, 0.1f, 9 - y));
                 }
             }
         }
-        Debug.Log(_board[4, 5]);
     }
 }

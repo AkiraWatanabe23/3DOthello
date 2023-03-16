@@ -32,9 +32,10 @@ public class InputTest : MonoBehaviour
             int x = Array.IndexOf(Consts.INPUT_ALPHABET, input[0]) + 1;
             int y = Array.IndexOf(Consts.INPUT_NUMBER, input[1]) + 1;
 
-            if (_checking.SetStone(_manager.MovablePos, x, 9 - y))
+            if (_checking.SetStone(_manager.MovablePos, x, y))
             {
-                _manager.Board = _checking.FlipStone(_manager.MovableDir[x, 9 - y], x, 9 - y, _manager.CurrentColor);
+                _manager.Board =
+                    _checking.FlipStone(_manager.Board, _manager.MovableDir[x, y], x, y, _manager.CurrentColor);
 
                 _manager.Display();
                 _manager.TurnCount++;
