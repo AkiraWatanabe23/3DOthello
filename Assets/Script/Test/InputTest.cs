@@ -7,9 +7,10 @@ public class InputTest : MonoBehaviour
 {
     [SerializeField] private InputField _input = default;
 
-    private Reversi _reversi = new();
-    private TurnOverCheck _checking = new();
     private GameManager _manager = default;
+
+    private readonly Reversi _reversi = new();
+    private readonly TurnOverCheck _checking = new();
 
     private void Start()
     {

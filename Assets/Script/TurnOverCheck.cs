@@ -142,7 +142,7 @@ public class TurnOverCheck
             return false;
         if (pos[x, y] == false)
         {
-            Debug.Log($"{x}, {y}");
+            Debug.Log("選択したマスには置けません");
             return false;
         }
 
@@ -155,9 +155,10 @@ public class TurnOverCheck
         board[x, y] = color;
 
         int setDir = movable;
+        Debug.Log(setDir);
 
         //左
-        if ((setDir & Consts.LEFT) == 1)
+        if ((setDir & Consts.LEFT) == Consts.LEFT)
         {
             int checkX = x - 1;
 
@@ -169,7 +170,7 @@ public class TurnOverCheck
         }
 
         //左上
-        if ((setDir & Consts.UPPER_LEFT) == 1)
+        if ((setDir & Consts.UPPER_LEFT) == Consts.UPPER_LEFT)
         {
             int checkX = x - 1;
             int checkY = y - 1;
@@ -183,7 +184,7 @@ public class TurnOverCheck
         }
 
         //上
-        if ((setDir & Consts.UPPER) == 1)
+        if ((setDir & Consts.UPPER) == Consts.UPPER)
         {
             int checkY = y - 1;
 
@@ -195,7 +196,7 @@ public class TurnOverCheck
         }
 
         //右上
-        if ((setDir & Consts.UPPER_RIGHT) == 1)
+        if ((setDir & Consts.UPPER_RIGHT) == Consts.UPPER_RIGHT)
         {
             int checkX = x + 1;
             int checkY = y - 1;
@@ -209,7 +210,7 @@ public class TurnOverCheck
         }
 
         //右
-        if ((setDir & Consts.RIGHT) == 1)
+        if ((setDir & Consts.RIGHT) == Consts.RIGHT)
         {
             int checkX = x + 1;
 
@@ -221,7 +222,7 @@ public class TurnOverCheck
         }
 
         //右下
-        if ((setDir & Consts.LOWER_RIGHT) == 1)
+        if ((setDir & Consts.LOWER_RIGHT) == Consts.LOWER_RIGHT)
         {
             int checkX = x + 1;
             int checkY = y + 1;
@@ -235,7 +236,7 @@ public class TurnOverCheck
         }
 
         //下
-        if ((setDir & Consts.LOWER) == 1)
+        if ((setDir & Consts.LOWER) == Consts.LOWER)
         {
             int checkY = y + 1;
 
@@ -247,7 +248,7 @@ public class TurnOverCheck
         }
 
         //左下
-        if ((setDir & Consts.LOWER_LEFT) == 1)
+        if ((setDir & Consts.LOWER_LEFT) == Consts.LOWER_LEFT)
         {
             int checkX = x - 1;
             int checkY = y + 1;
