@@ -1,4 +1,5 @@
 ﻿using Constants;
+using System;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -98,5 +99,17 @@ public class GameManager : MonoBehaviour
                 }
             }
         }
+    }
+
+    /// <summary> ゲームが終了しているかの判定 </summary>
+    public bool GameFinish()
+    {
+        if (_turnCount >= Consts.MAX_TURNS)
+            return true;
+
+        if (Array.IndexOf(_movablePos, 1) < 0)
+            return false;
+
+        return false;
     }
 }

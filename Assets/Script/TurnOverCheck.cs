@@ -155,8 +155,8 @@ public class TurnOverCheck
         board[x, y] = color;
 
         int setDir = movable;
-        Debug.Log(setDir);
 
+        //ビット演算を行い、調べたい方向のフラグが立っているかを調べる
         //左
         if ((setDir & Consts.LEFT) == Consts.LEFT)
         {

@@ -39,10 +39,19 @@ public class InputTest : MonoBehaviour
                     _checking.FlipStone(_manager.Board, _manager.MovableDir[x, y], x, y, _manager.CurrentColor);
 
                 _manager.Display();
-                _manager.TurnCount++;
-                _manager.CurrentColor = -_manager.CurrentColor;
 
-                _manager.ResetMovables();
+                //ゲームがまだ終了していなければ
+                if (!_manager.GameFinish())
+                {
+                    _manager.TurnCount++;
+                    _manager.CurrentColor = -_manager.CurrentColor;
+
+                    _manager.ResetMovables();
+                }
+                else
+                {
+                    Debug.Log("ゲームを終了します");
+                }
             }
         }
         else
