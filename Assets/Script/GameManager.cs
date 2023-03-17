@@ -1,9 +1,12 @@
 ﻿using Constants;
 using System;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class GameManager : MonoBehaviour
 {
+    [SerializeField] private UnityEvent _event = default;
+
     private readonly TurnOverCheck _checking = new();
     private ObjectPool _pool = default;
 
@@ -47,6 +50,12 @@ public class GameManager : MonoBehaviour
                     _pool.SetBlack(new Vector3(i, 0.1f, 9 - j));
             }
         }
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Space))
+            _event?.Invoke();
     }
 
     public void ResetMovables()

@@ -39,7 +39,7 @@ namespace Constants
         public static readonly Dictionary<SceneNames, string> Scenes = new()
         {
             [SceneNames.TITLE_SCENE] = "Title",
-            [SceneNames.GAME_SCENE] = "MainGame",
+            [SceneNames.GAME_SCENE] = "MainScene",
             [SceneNames.RESULT_SCENE] = "Result",
         };
 
