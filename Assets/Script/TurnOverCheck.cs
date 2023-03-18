@@ -95,8 +95,10 @@ public class TurnOverCheck
             int checkY = y + 2;
 
             while (board[checkX, checkY] == -color)
+            {
                 checkX++;
-            checkY++;
+                checkY++;
+            }
 
             if (board[checkX, checkY] == color)
                 moveDir |= Consts.LOWER_RIGHT;
