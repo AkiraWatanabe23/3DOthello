@@ -185,6 +185,7 @@ public class GameManager : MonoBehaviour
         {
             Debug.Log("引き分け");
         }
+        Debug.Log($"黒：{blackCount}, 白：{whiteCount}");
         _event?.Invoke();
     }
 }
