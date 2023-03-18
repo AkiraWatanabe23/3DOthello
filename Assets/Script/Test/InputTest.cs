@@ -1,5 +1,6 @@
 ﻿using Constants;
 using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -27,8 +28,7 @@ public class InputTest : MonoBehaviour
             _inputPlace = _enemy.TypeCheck();
             Debug.Log(_inputPlace);
         }
-
-        InputMove();
+        StartCoroutine(InputMove());
     }
 
     public void BlackInput(Vector3 pos)
@@ -45,11 +45,16 @@ public class InputTest : MonoBehaviour
             Debug.Log("中断");
             //ゲームを中断する
         }
-        InputMove();
+        StartCoroutine(InputMove());
     }
 
-    private void InputMove()
+    private IEnumerator InputMove()
     {
+        if (_manager.CurrentColor == Consts.WHITE)
+        {
+            yield return new WaitForSeconds(1f);
+        }
+
         if (_reversi.InputCorrect(_inputPlace))
         {
             int x = Array.IndexOf(Consts.INPUT_ALPHABET, _inputPlace[0]) + 1;
@@ -95,5 +100,10 @@ public class InputTest : MonoBehaviour
             Debug.Log("パスしない");
         }
         Debug.Log($"Turn : {_manager.CurrentColor}");
+
+        if (_manager.CurrentColor == Consts.WHITE)
+        {
+            WhiteInput();
+        }
     }
 }
