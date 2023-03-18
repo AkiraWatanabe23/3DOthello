@@ -90,15 +90,8 @@ public class InputTest : MonoBehaviour
         }
 
         if (_manager.Skip())
-        {
-            _manager.CurrentColor = -_manager.CurrentColor;
-            _manager.ResetMovables();
             Debug.Log("パスしました");
-        }
-        else
-        {
-            Debug.Log("パスしない");
-        }
+
         Debug.Log($"Turn : {_manager.CurrentColor}");
 
         if (_manager.CurrentColor == Consts.WHITE)

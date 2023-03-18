@@ -1,5 +1,4 @@
 ﻿using Constants;
-using System;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -122,9 +121,12 @@ public class GameManager : MonoBehaviour
 
         if (GameFinish())
         {
-            Debug.Log("終わった");
+            Debug.Log("ゲーム終了");
             return false;
         }
+
+        _currentColor = -_currentColor;
+        ResetMovables();
 
         return true;
     }
@@ -147,7 +149,7 @@ public class GameManager : MonoBehaviour
                 }
                 else if (_currentColor == Consts.WHITE)
                 {
-                    if (_checking.MovableCheck(_board, i, j, _currentColor) != 0)
+                    if (_checking.MovableCheck(_board, i, j, -_currentColor) != 0)
                         return false;
                 }
             }
@@ -186,6 +188,6 @@ public class GameManager : MonoBehaviour
             Debug.Log("引き分け");
         }
         Debug.Log($"黒：{blackCount}, 白：{whiteCount}");
-        _event?.Invoke();
+        //_event?.Invoke();
     }
 }
