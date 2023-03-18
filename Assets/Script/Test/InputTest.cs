@@ -20,17 +20,24 @@ public class InputTest : MonoBehaviour
         _enemy = GetComponent<EnemyMove>();
     }
 
-    public void InputMove()
+    public void WhiteInput()
     {
-        if (_manager.CurrentColor == Consts.BLACK)
-        {
-            _inputPlace = _input.text;
-            Debug.Log(_inputPlace + "を選択しました");
-        }
-        else if (_manager.CurrentColor == Consts.WHITE)
+        if (_manager.CurrentColor == Consts.WHITE)
         {
             _inputPlace = _enemy.TypeCheck();
             Debug.Log(_inputPlace);
+        }
+
+        InputMove();
+    }
+
+    public void BlackInput(Vector3 pos)
+    {
+        if (_manager.CurrentColor == Consts.BLACK)
+        {
+            //Consts.INPUT_ALPHABET[x - 1].ToString() + Consts.INPUT_NUMBER[y - 1]
+            _inputPlace = Consts.INPUT_ALPHABET[(int)pos.x - 1].ToString() + Consts.INPUT_NUMBER[9 - (int)pos.z - 1];
+            Debug.Log(_inputPlace + "を選択しました");
         }
 
         if (_inputPlace == "e")
@@ -38,7 +45,11 @@ public class InputTest : MonoBehaviour
             Debug.Log("中断");
             //ゲームを中断する
         }
+        InputMove();
+    }
 
+    private void InputMove()
+    {
         if (_reversi.InputCorrect(_inputPlace))
         {
             int x = Array.IndexOf(Consts.INPUT_ALPHABET, _inputPlace[0]) + 1;

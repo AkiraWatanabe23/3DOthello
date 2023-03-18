@@ -650,7 +650,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1233412782}
         m_TargetAssemblyTypeName: 
-        m_MethodName: InputMove
+        m_MethodName: WhiteInput
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
