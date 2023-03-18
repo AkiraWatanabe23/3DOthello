@@ -49,7 +49,7 @@ public class EnemyMove : MonoBehaviour
         var x = grids[randomIndex][0];
         var y = grids[randomIndex][1];
 
-        return Consts.INPUT_ALPHABET[x].ToString() + Consts.INPUT_NUMBER[y];
+        return Consts.INPUT_ALPHABET[x - 1].ToString() + Consts.INPUT_NUMBER[y - 1];
     }
 
     private void PieceCount()

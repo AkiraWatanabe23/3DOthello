@@ -30,6 +30,7 @@ public class InputTest : MonoBehaviour
         else if (_manager.CurrentColor == Consts.WHITE)
         {
             _inputPlace = _enemy.TypeCheck();
+            Debug.Log(_inputPlace);
         }
 
         if (_inputPlace == "e")
@@ -57,6 +58,7 @@ public class InputTest : MonoBehaviour
                     _manager.CurrentColor = -_manager.CurrentColor;
 
                     _manager.ResetMovables();
+                    Debug.Log("ゲームを続行します");
                 }
                 else
                 {
