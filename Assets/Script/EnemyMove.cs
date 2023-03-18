@@ -18,8 +18,6 @@ public class EnemyMove : MonoBehaviour
     public string TypeCheck()
     {
         string input = "";
-        //if (_manager.Skip())
-        //    return;
 
         switch (_type)
         {

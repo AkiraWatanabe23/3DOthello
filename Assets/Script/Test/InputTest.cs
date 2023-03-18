@@ -63,6 +63,7 @@ public class InputTest : MonoBehaviour
                 else
                 {
                     Debug.Log("ゲームを終了します");
+                    _manager.WinningCheck();
                 }
             }
         }
@@ -71,5 +72,17 @@ public class InputTest : MonoBehaviour
             Debug.LogWarning("不正な入力です。正しい形式(例. f5)で入力してください。");
             _input.text = "";
         }
+
+        if (_manager.Skip())
+        {
+            _manager.CurrentColor = -_manager.CurrentColor;
+            _manager.ResetMovables();
+            Debug.Log("パスしました");
+        }
+        else
+        {
+            Debug.Log("パスしない");
+        }
+        Debug.Log($"Turn : {_manager.CurrentColor}");
     }
 }

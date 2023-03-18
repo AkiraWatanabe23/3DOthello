@@ -231,7 +231,7 @@ public class TurnOverCheck
 
             while (board[checkX, checkY] == -color)
             {
-                board[checkX, y] = color;
+                board[checkX, checkY] = color;
                 checkX++;
                 checkY++;
             }
@@ -257,7 +257,7 @@ public class TurnOverCheck
 
             while (board[checkX, checkY] == -color)
             {
-                board[x, checkY] = color;
+                board[checkX, checkY] = color;
                 checkX--;
                 checkY++;
             }

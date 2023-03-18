@@ -52,12 +52,6 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Space))
-            _event?.Invoke();
-    }
-
     public void ResetMovables()
     {
         for (int i = 0; i < 10; i++)
@@ -113,14 +107,24 @@ public class GameManager : MonoBehaviour
     /// <summary> パスをするかの判定 </summary>
     public bool Skip()
     {
-        if (Array.IndexOf(_movablePos, true) >= 0)
-            return false;
+        for (int i = 1; i < Consts.BOARD_SIZE + 1; i++)
+        {
+            for (int j = 1; j < Consts.BOARD_SIZE + 1; j++)
+            {
+                //置くことができるマスがあればパスしない
+                if (_movablePos[i, j])
+                {
+                    Debug.Log($"置けるよ {i}, {j}");
+                    return false;
+                }
+            }
+        }
 
         if (GameFinish())
+        {
+            Debug.Log("終わった");
             return false;
-
-        _currentColor = -_currentColor;
-        ResetMovables();
+        }
 
         return true;
     }
@@ -150,5 +154,37 @@ public class GameManager : MonoBehaviour
         }
 
         return true;
+    }
+
+    public void WinningCheck()
+    {
+        int blackCount = 0;
+        int whiteCount = 0;
+
+        for (int i = 1; i < Consts.BOARD_SIZE + 1; i++)
+        {
+            for (int j = 1; j < Consts.BOARD_SIZE + 1; j++)
+            {
+                if (_board[i, j] == Consts.BLACK)
+                    blackCount++;
+                else if (_board[i, j] == Consts.WHITE)
+                    whiteCount++;
+            }
+        }
+
+        int diff = blackCount - whiteCount;
+        if (diff > 0)
+        {
+            Debug.Log("黒の勝ち");
+        }
+        else if (diff < 0)
+        {
+            Debug.Log("白の勝ち");
+        }
+        else
+        {
+            Debug.Log("引き分け");
+        }
+        _event?.Invoke();
     }
 }
