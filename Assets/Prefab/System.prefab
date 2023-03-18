@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 3796517476019684657}
   - component: {fileID: 3796517476019684658}
   - component: {fileID: 1233412782}
+  - component: {fileID: 5368509511642851569}
   m_Layer: 0
   m_Name: System
   m_TagString: Untagged
@@ -46,6 +47,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d2c9a795c2ef38f48ba1f2556ff1e70e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _event:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: 
+        m_MethodName: Test
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &3796517476019684658
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -73,3 +89,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 21c31e366ca86d644a34aa546950e7af, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _input: {fileID: 0}
+--- !u!114 &5368509511642851569
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3796517476019684663}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c88120ae3273ab34c85557187ec06b7d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _type: 0

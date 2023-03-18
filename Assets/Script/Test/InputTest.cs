@@ -7,7 +7,9 @@ public class InputTest : MonoBehaviour
 {
     [SerializeField] private InputField _input = default;
 
+    private string _inputPlace = "";
     private GameManager _manager = default;
+    private EnemyMove _enemy = default;
 
     private readonly Reversi _reversi = new();
     private readonly TurnOverCheck _checking = new();
@@ -15,23 +17,31 @@ public class InputTest : MonoBehaviour
     private void Start()
     {
         _manager = GetComponent<GameManager>();
+        _enemy = GetComponent<EnemyMove>();
     }
 
     public void InputMove()
     {
-        string input = _input.text;
-        Debug.Log(input + "を選択しました");
+        if (_manager.CurrentColor == Consts.BLACK)
+        {
+            _inputPlace = _input.text;
+            Debug.Log(_inputPlace + "を選択しました");
+        }
+        else if (_manager.CurrentColor == Consts.WHITE)
+        {
+            _inputPlace = _enemy.TypeCheck();
+        }
 
-        if (input == "e")
+        if (_inputPlace == "e")
         {
             Debug.Log("中断");
             //ゲームを中断する
         }
 
-        if (_reversi.InputCorrect(input))
+        if (_reversi.InputCorrect(_inputPlace))
         {
-            int x = Array.IndexOf(Consts.INPUT_ALPHABET, input[0]) + 1;
-            int y = Array.IndexOf(Consts.INPUT_NUMBER, input[1]) + 1;
+            int x = Array.IndexOf(Consts.INPUT_ALPHABET, _inputPlace[0]) + 1;
+            int y = Array.IndexOf(Consts.INPUT_NUMBER, _inputPlace[1]) + 1;
 
             if (_checking.SetStone(_manager.MovablePos, x, y))
             {

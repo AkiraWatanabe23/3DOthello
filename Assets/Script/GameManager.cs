@@ -110,15 +110,45 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    /// <summary> パスをするかの判定 </summary>
+    public bool Skip()
+    {
+        if (Array.IndexOf(_movablePos, true) >= 0)
+            return false;
+
+        if (GameFinish())
+            return false;
+
+        _currentColor = -_currentColor;
+        ResetMovables();
+
+        return true;
+    }
+
     /// <summary> ゲームが終了しているかの判定 </summary>
     public bool GameFinish()
     {
         if (_turnCount >= Consts.MAX_TURNS)
             return true;
 
-        if (Array.IndexOf(_movablePos, 1) < 0)
-            return false;
+        for (int i = 1; i < Consts.BOARD_SIZE + 1; i++)
+        {
+            for (int j = 1; j < Consts.BOARD_SIZE + 1; j++)
+            {
+                //まだ打てる手があれば続行する
+                if (_currentColor == Consts.BLACK)
+                {
+                    if (_movablePos[i, j])
+                        return false;
+                }
+                else if (_currentColor == Consts.WHITE)
+                {
+                    if (_checking.MovableCheck(_board, i, j, _currentColor) != 0)
+                        return false;
+                }
+            }
+        }
 
-        return false;
+        return true;
     }
 }
