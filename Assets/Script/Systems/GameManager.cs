@@ -8,6 +8,7 @@ public class GameManager : MonoBehaviour
 
     private readonly TurnOverCheck _checking = new();
     private ObjectPool _pool = default;
+    private UIManager _uiManager = default;
 
     //実際の盤面等を示す値
     private int[,] _board = new int[10, 10];
@@ -49,6 +50,8 @@ public class GameManager : MonoBehaviour
                     _pool.SetBlack(new Vector3(i, 0.1f, 9 - j));
             }
         }
+        _uiManager = GetComponent<UIManager>();
+        StoneCount();
     }
 
     public void ResetMovables()
@@ -182,5 +185,25 @@ public class GameManager : MonoBehaviour
         }
         Debug.Log($"黒：{blackCount}, 白：{whiteCount}");
         _event?.Invoke();
+    }
+
+    public void StoneCount()
+    {
+        int blackCount = 0;
+        int whiteCount = 0;
+
+        for (int i = 1; i < Consts.BOARD_SIZE + 1; i++)
+        {
+            for (int j = 1; j < Consts.BOARD_SIZE + 1; j++)
+            {
+                if (_board[i, j] == Consts.BLACK)
+                    blackCount++;
+                else if (_board[i, j] == Consts.WHITE)
+                    whiteCount++;
+            }
+        }
+
+        _uiManager.BlackCount = blackCount;
+        _uiManager.WhiteCount = whiteCount;
     }
 }

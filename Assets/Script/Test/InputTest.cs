@@ -2,12 +2,9 @@
 using System;
 using System.Collections;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class InputTest : MonoBehaviour
 {
-    [SerializeField] private InputField _input = default;
-
     private string _inputPlace = "";
     private GameManager _manager = default;
     private EnemyMove _enemy = default;
@@ -75,6 +72,7 @@ public class InputTest : MonoBehaviour
                     _manager.CurrentColor = -_manager.CurrentColor;
 
                     _manager.ResetMovables();
+                    _manager.StoneCount();
                     Debug.Log("ゲームを続行します");
                 }
                 else
@@ -87,7 +85,6 @@ public class InputTest : MonoBehaviour
         else
         {
             Debug.LogWarning("不正な入力です。正しい形式(例. f5)で入力してください。");
-            _input.text = "";
         }
 
         if (_manager.Skip())
