@@ -1,12 +1,13 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using DG.Tweening;
 
 public class UIManager : MonoBehaviour
 {
+    [SerializeField] private Image _image = default;
     [SerializeField] private Text _blackText = default;
     [SerializeField] private Text _whiteText = default;
 
-    private bool _isFinish = false;
     private int _blackCount = 0;
     private int _whiteCount = 0;
 
@@ -22,10 +23,16 @@ public class UIManager : MonoBehaviour
     {
         _blackText.text = "Black : " + _blackCount.ToString();
         _whiteText.text = "White : " + _whiteCount.ToString();
+
+        if (Input.GetMouseButtonDown(0))
+        {
+            GameFinish();
+        }
     }
 
-    private void GameFinish()
+    public void GameFinish()
     {
-
+        _image.gameObject.SetActive(true);
+        //ここでDOTween
     }
 }
