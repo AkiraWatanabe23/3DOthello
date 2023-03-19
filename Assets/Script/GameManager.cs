@@ -112,16 +112,14 @@ public class GameManager : MonoBehaviour
             {
                 //置くことができるマスがあればパスしない
                 if (_movablePos[i, j])
-                {
-                    Debug.Log($"置けるよ {i}, {j}");
                     return false;
-                }
             }
         }
 
         if (GameFinish())
         {
-            Debug.Log("ゲーム終了");
+            Debug.Log("ゲーム終了：石が置けなくなりました");
+            WinningCheck();
             return false;
         }
 
@@ -142,16 +140,11 @@ public class GameManager : MonoBehaviour
             for (int j = 1; j < Consts.BOARD_SIZE + 1; j++)
             {
                 //まだ打てる手があれば続行する
-                if (_currentColor == Consts.BLACK)
-                {
-                    if (_movablePos[i, j])
-                        return false;
-                }
-                else if (_currentColor == Consts.WHITE)
-                {
-                    if (_checking.MovableCheck(_board, i, j, -_currentColor) != 0)
-                        return false;
-                }
+                if (_movablePos[i, j])
+                    return false;
+
+                if (_checking.MovableCheck(_board, i, j, -_currentColor) != 0)
+                    return false;
             }
         }
 
@@ -188,6 +181,6 @@ public class GameManager : MonoBehaviour
             Debug.Log("引き分け");
         }
         Debug.Log($"黒：{blackCount}, 白：{whiteCount}");
-        //_event?.Invoke();
+        _event?.Invoke();
     }
 }

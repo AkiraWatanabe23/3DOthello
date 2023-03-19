@@ -44,6 +44,7 @@ public class InputTest : MonoBehaviour
         {
             Debug.Log("中断");
             //ゲームを中断する
+            _manager.WinningCheck();
         }
         StartCoroutine(InputMove());
     }
