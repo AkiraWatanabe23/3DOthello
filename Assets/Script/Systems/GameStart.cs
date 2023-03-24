@@ -7,7 +7,7 @@ public class GameStart : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyUp(KeyCode.Return))
+        if (Input.GetMouseButtonDown(0))
         {
             Debug.Log("ゲーム開始");
             _event?.Invoke();
