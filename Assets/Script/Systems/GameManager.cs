@@ -186,7 +186,7 @@ public class GameManager : MonoBehaviour
         }
         Debug.Log($"黒：{blackCount}, 白：{whiteCount}");
         _uiManager.GameFinish();
-        _event?.Invoke();
+        //_event?.Invoke();
     }
 
     public void StoneCount()
