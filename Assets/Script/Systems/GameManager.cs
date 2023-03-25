@@ -13,7 +13,7 @@ public class GameManager : MonoBehaviour
     //実際の盤面等を示す値
     private int[,] _board = new int[10, 10];
     private int _turnCount = 0;
-    private int _currentColor = Consts.BLACK;
+    private static int _currentColor = Consts.BLACK;
 
     //判定用の配列
     private bool[,] _movablePos = new bool[10, 10];
@@ -21,7 +21,7 @@ public class GameManager : MonoBehaviour
 
     public int[,] Board { get => _board; set => _board = value; }
     public int TurnCount { get => _turnCount; set => _turnCount = value; }
-    public int CurrentColor { get => _currentColor; set => _currentColor = value; }
+    public static int CurrentColor { get => _currentColor; set => _currentColor = value; }
     public bool[,] MovablePos { get => _movablePos; protected set => _movablePos = value; }
     public int[,] MovableDir { get => _movableDir; protected set => _movableDir = value; }
 

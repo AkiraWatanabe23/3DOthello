@@ -20,7 +20,7 @@ public class InputTest : MonoBehaviour
 
     public void WhiteInput()
     {
-        if (_manager.CurrentColor == Consts.WHITE)
+        if (GameManager.CurrentColor == Consts.WHITE)
         {
             _inputPlace = _enemy.TypeCheck();
             Debug.Log(_inputPlace);
@@ -30,7 +30,7 @@ public class InputTest : MonoBehaviour
 
     public void BlackInput(Vector3 pos)
     {
-        if (_manager.CurrentColor == Consts.BLACK)
+        if (GameManager.CurrentColor == Consts.BLACK)
         {
             //Consts.INPUT_ALPHABET[x - 1].ToString() + Consts.INPUT_NUMBER[y - 1]
             _inputPlace = Consts.INPUT_ALPHABET[(int)pos.x - 1].ToString() + Consts.INPUT_NUMBER[9 - (int)pos.z - 1];
@@ -48,7 +48,7 @@ public class InputTest : MonoBehaviour
 
     private IEnumerator InputMove()
     {
-        if (_manager.CurrentColor == Consts.WHITE)
+        if (GameManager.CurrentColor == Consts.WHITE)
         {
             yield return new WaitForSeconds(1f);
         }
@@ -61,7 +61,7 @@ public class InputTest : MonoBehaviour
             if (_checking.SetStone(_manager.MovablePos, x, y))
             {
                 _manager.Board =
-                    _checking.FlipStone(_manager.Board, _manager.MovableDir[x, y], x, y, _manager.CurrentColor);
+                    _checking.FlipStone(_manager.Board, _manager.MovableDir[x, y], x, y, GameManager.CurrentColor);
 
                 _manager.Display();
 
@@ -69,7 +69,7 @@ public class InputTest : MonoBehaviour
                 if (!_manager.GameFinish())
                 {
                     _manager.TurnCount++;
-                    _manager.CurrentColor = -_manager.CurrentColor;
+                    GameManager.CurrentColor = -GameManager.CurrentColor;
 
                     _manager.ResetMovables();
                     _manager.StoneCount();
@@ -90,9 +90,9 @@ public class InputTest : MonoBehaviour
         if (_manager.Skip())
             Debug.Log("パスしました");
 
-        Debug.Log($"Turn : {_manager.CurrentColor}");
+        Debug.Log($"Turn : {GameManager.CurrentColor}");
 
-        if (_manager.CurrentColor == Consts.WHITE)
+        if (GameManager.CurrentColor == Consts.WHITE)
         {
             WhiteInput();
         }
