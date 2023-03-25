@@ -16,6 +16,9 @@ public class InputTest : MonoBehaviour
     {
         _manager = GetComponent<GameManager>();
         _enemy = GetComponent<EnemyMove>();
+
+        if (GameManager.CurrentColor == Consts.WHITE)
+            WhiteInput();
     }
 
     public void WhiteInput()

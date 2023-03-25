@@ -27,13 +27,14 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
+        Debug.Log(_currentColor);
         _board[4, 4] = Consts.WHITE;
         _board[5, 5] = Consts.WHITE;
         _board[4, 5] = Consts.BLACK;
         _board[5, 4] = Consts.BLACK;
 
         _turnCount = 0;
-        _currentColor = Consts.BLACK;
+        //_currentColor = Consts.BLACK;
 
         ResetMovables();
         _pool = GetComponent<ObjectPool>();
@@ -54,6 +55,7 @@ public class GameManager : MonoBehaviour
         StoneCount();
     }
 
+    /// <summary> 置けるマスの探索 </summary>
     public void ResetMovables()
     {
         for (int i = 0; i < 10; i++)

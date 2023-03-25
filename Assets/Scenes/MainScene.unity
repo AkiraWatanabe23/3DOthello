@@ -894,6 +894,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 7491427270399381286, guid: a9e555a0c8a852e469038a8b39f27a4b, type: 3}
+      propertyPath: _fadeTime
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7491427270399381286, guid: a9e555a0c8a852e469038a8b39f27a4b, type: 3}
       propertyPath: _fadePanel
       value: 
       objectReference: {fileID: 849151189}
