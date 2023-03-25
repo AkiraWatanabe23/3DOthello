@@ -25,9 +25,8 @@ public class GameManager : MonoBehaviour
     public bool[,] MovablePos { get => _movablePos; protected set => _movablePos = value; }
     public int[,] MovableDir { get => _movableDir; protected set => _movableDir = value; }
 
-    private void Start()
+    private void Awake()
     {
-        Debug.Log(_currentColor);
         _board[4, 4] = Consts.WHITE;
         _board[5, 5] = Consts.WHITE;
         _board[4, 5] = Consts.BLACK;
