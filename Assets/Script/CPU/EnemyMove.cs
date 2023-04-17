@@ -7,6 +7,7 @@ public class EnemyMove : MonoBehaviour
     private GameManager _manager = default;
     private readonly RandomMove _random = new();
     private readonly PieceCountMove _count = new();
+    private readonly EvaluationMove _evaluation = new();
 
     public SelectType Type { get => _type; protected set => _type = value; }
 
@@ -19,6 +20,7 @@ public class EnemyMove : MonoBehaviour
     {
         string input = "";
 
+        //相手の行動選択(今後増える予定有)
         switch (_type)
         {
             case SelectType.RANDOM:
@@ -26,6 +28,9 @@ public class EnemyMove : MonoBehaviour
                 break;
             case SelectType.PIECE_COUNT:
                 input = _count.PieceCount(_manager.MovablePos);
+                break;
+            case SelectType.EVALUATION_FUNC:
+                input = _evaluation.Evaluation(_manager.MovablePos);
                 break;
         }
         return input;
@@ -38,4 +43,6 @@ public enum SelectType
     RANDOM,
     /// <summary> 一番多くの石を獲れるマスを選ぶ </summary>
     PIECE_COUNT,
+    /// <summary> 評価関数を用いて、マスを選ぶ </summary>
+    EVALUATION_FUNC,
 }
