@@ -22,12 +22,21 @@ public class TurnOverCheck
         {
             int checkX = x - 2;
             int checkY = y;
+            //Ç–Ç¡Ç≠ÇËï‘Ç∑êŒÇÃêî
+            int count = 0;
 
             while (board[checkX, checkY] == -color)
+            {
                 checkX--;
 
+                count++;
+            }
+
             if (board[checkX, checkY] == color)
+            {
                 moveDir |= Consts.LEFT;
+                PieceCountMove.FlipCount.Add(new int[3] {checkX, checkY, count});
+            }
         }
 
         //ç∂è„
@@ -35,15 +44,22 @@ public class TurnOverCheck
         {
             int checkX = x - 2;
             int checkY = y - 2;
+            //Ç–Ç¡Ç≠ÇËï‘Ç∑êŒÇÃêî
+            int count = 0;
 
             while (board[checkX, checkY] == -color)
             {
                 checkX--;
                 checkY--;
+
+                count++;
             }
 
             if (board[checkX, checkY] == color)
+            {
                 moveDir |= Consts.UPPER_LEFT;
+                PieceCountMove.FlipCount.Add(new int[3] { checkX, checkY, count });
+            }
         }
 
         //è„
@@ -51,12 +67,21 @@ public class TurnOverCheck
         {
             int checkX = x;
             int checkY = y - 2;
+            //Ç–Ç¡Ç≠ÇËï‘Ç∑êŒÇÃêî
+            int count = 0;
 
             while (board[checkX, checkY] == -color)
+            {
                 checkY--;
 
+                count++;
+            }
+
             if (board[checkX, checkY] == color)
+            {
                 moveDir |= Consts.UPPER;
+                PieceCountMove.FlipCount.Add(new int[3] { checkX, checkY, count });
+            }
         }
 
         //âEè„
@@ -64,15 +89,22 @@ public class TurnOverCheck
         {
             int checkX = x + 2;
             int checkY = y - 2;
+            //Ç–Ç¡Ç≠ÇËï‘Ç∑êŒÇÃêî
+            int count = 0;
 
             while (board[checkX, checkY] == -color)
             {
                 checkX++;
                 checkY--;
+
+                count++;
             }
 
             if (board[checkX, checkY] == color)
+            {
                 moveDir |= Consts.UPPER_RIGHT;
+                PieceCountMove.FlipCount.Add(new int[3] { checkX, checkY, count });
+            }
         }
 
         //âE
@@ -80,12 +112,21 @@ public class TurnOverCheck
         {
             int checkX = x + 2;
             int checkY = y;
+            //Ç–Ç¡Ç≠ÇËï‘Ç∑êŒÇÃêî
+            int count = 0;
 
             while (board[checkX, checkY] == -color)
+            {
                 checkX++;
 
+                count++;
+            }
+
             if (board[checkX, checkY] == color)
+            {
                 moveDir |= Consts.RIGHT;
+                PieceCountMove.FlipCount.Add(new int[3] { checkX, checkY, count });
+            }
         }
 
         //âEâ∫
@@ -93,15 +134,22 @@ public class TurnOverCheck
         {
             int checkX = x + 2;
             int checkY = y + 2;
+            //Ç–Ç¡Ç≠ÇËï‘Ç∑êŒÇÃêî
+            int count = 0;
 
             while (board[checkX, checkY] == -color)
             {
                 checkX++;
                 checkY++;
+
+                count++;
             }
 
             if (board[checkX, checkY] == color)
+            {
                 moveDir |= Consts.LOWER_RIGHT;
+                PieceCountMove.FlipCount.Add(new int[3] { checkX, checkY, count });
+            }
         }
 
         //â∫
@@ -109,12 +157,21 @@ public class TurnOverCheck
         {
             int checkX = x;
             int checkY = y + 2;
+            //Ç–Ç¡Ç≠ÇËï‘Ç∑êŒÇÃêî
+            int count = 0;
 
             while (board[checkX, checkY] == -color)
+            {
                 checkY++;
 
+                count++;
+            }
+
             if (board[checkX, checkY] == color)
+            {
                 moveDir |= Consts.LOWER;
+                PieceCountMove.FlipCount.Add(new int[3] { checkX, checkY, count });
+            }
         }
 
         //ç∂â∫
@@ -122,15 +179,22 @@ public class TurnOverCheck
         {
             int checkX = x - 2;
             int checkY = y + 2;
+            //Ç–Ç¡Ç≠ÇËï‘Ç∑êŒÇÃêî
+            int count = 0;
 
             while (board[checkX, checkY] == -color)
             {
                 checkX--;
                 checkY++;
+
+                count++;
             }
 
             if (board[checkX, checkY] == color)
+            {
                 moveDir |= Consts.LOWER_LEFT;
+                PieceCountMove.FlipCount.Add(new int[3] { checkX, checkY, count });
+            }
         }
         return moveDir;
     }

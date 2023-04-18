@@ -3,11 +3,11 @@ using UnityEngine.EventSystems;
 
 public class ClickInput : MonoBehaviour, IPointerClickHandler
 {
-    private InputTest _input = default;
+    private PlayerInput _input = default;
 
     private void Start()
     {
-        _input = GameObject.Find("System").GetComponent<InputTest>();
+        _input = GameObject.Find("System").GetComponent<PlayerInput>();
     }
 
     public void OnPointerClick(PointerEventData eventData)

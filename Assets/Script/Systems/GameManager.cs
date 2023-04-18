@@ -1,6 +1,7 @@
 ﻿using Constants;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -13,15 +14,15 @@ public class GameManager : MonoBehaviour
     //実際の盤面等を示す値
     private int[,] _board = new int[10, 10];
     private int _turnCount = 0;
-    private static int _currentColor = Consts.BLACK;
 
     //判定用の配列
     private bool[,] _movablePos = new bool[10, 10];
     private int[,] _movableDir = new int[10, 10];
 
+    public static int CurrentColor = Consts.BLACK;
+
     public int[,] Board { get => _board; set => _board = value; }
     public int TurnCount { get => _turnCount; set => _turnCount = value; }
-    public static int CurrentColor { get => _currentColor; set => _currentColor = value; }
     public bool[,] MovablePos { get => _movablePos; protected set => _movablePos = value; }
     public int[,] MovableDir { get => _movableDir; protected set => _movableDir = value; }
 
@@ -54,6 +55,15 @@ public class GameManager : MonoBehaviour
         StoneCount();
     }
 
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            //現在のシーンを再読み込み
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        }
+    }
+
     /// <summary> 置けるマスの探索 </summary>
     public void ResetMovables()
     {
@@ -69,7 +79,7 @@ public class GameManager : MonoBehaviour
         {
             for (int y = 1; y < Consts.BOARD_SIZE + 1; y++)
             {
-                int moveDir = _checking.MovableCheck(_board, x, y, _currentColor);
+                int moveDir = _checking.MovableCheck(_board, x, y, CurrentColor);
                 _movableDir[x, y] = moveDir;
 
                 if (moveDir != 0)
@@ -127,7 +137,7 @@ public class GameManager : MonoBehaviour
             return false;
         }
 
-        _currentColor = -_currentColor;
+        CurrentColor = -CurrentColor;
         ResetMovables();
 
         return true;
@@ -147,7 +157,7 @@ public class GameManager : MonoBehaviour
                 if (_movablePos[i, j])
                     return false;
 
-                if (_checking.MovableCheck(_board, i, j, -_currentColor) != 0)
+                if (_checking.MovableCheck(_board, i, j, -CurrentColor) != 0)
                     return false;
             }
         }

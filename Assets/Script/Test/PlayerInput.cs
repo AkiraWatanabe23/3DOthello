@@ -3,7 +3,7 @@ using System;
 using System.Collections;
 using UnityEngine;
 
-public class InputTest : MonoBehaviour
+public class PlayerInput : MonoBehaviour
 {
     private string _inputPlace = "";
     private GameManager _manager = default;
