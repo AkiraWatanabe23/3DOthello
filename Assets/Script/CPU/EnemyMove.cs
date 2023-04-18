@@ -15,7 +15,6 @@ public class EnemyMove : MonoBehaviour
     private void Start()
     {
         _manager = GetComponent<GameManager>();
-        _count.Start();
     }
 
     public string TypeCheck()
