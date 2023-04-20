@@ -5,6 +5,11 @@ using UnityEngine;
 [System.Serializable]
 public class SimurationMove
 {
+    private GameManager _manager = default;
+
+    private int[,] _simurateBoard = new int[10, 10];
+    /// <summary> 一時保存用の配列 </summary>
+    private int[,] _savedBoard = new int[10, 10];
     /// <summary> 盤面の評価値を示した盤面 </summary>
     private int[,] _evaluationBoard = new int[8, 8]
     { { 9, 1, 5, 3, 3, 5, 1, 9 },
@@ -15,11 +20,11 @@ public class SimurationMove
       { 5, 3, 4, 6, 6, 4, 3, 5 },
       { 1, 1, 3, 4, 4, 3, 1, 1 },
       { 9, 1, 5, 3, 3, 5, 1, 9 } };
-    private GameManager _manager = default;
 
     public void Start(GameManager manager)
     {
         _manager = manager;
+        Array.Clear(_simurateBoard, 0, _simurateBoard.Length);
     }
 
     public string Simuration(bool[,] movable)
@@ -30,6 +35,7 @@ public class SimurationMove
         //3,_evaluationBoardに沿って盤面を点数化
         //  (味方の石なら *1, 敵の石なら * -1)
         //4,最大値をとったマスを選択
+        _savedBoard = _manager.Board;
 
         int x = 0;
         int y = 0;
@@ -53,7 +59,7 @@ public class SimurationMove
             }
         }
 
-        Debug.Log(score);
+        _manager.Board = _savedBoard;
         return Consts.INPUT_ALPHABET[x - 1].ToString() + Consts.INPUT_NUMBER[y - 1];
     }
 
@@ -61,12 +67,11 @@ public class SimurationMove
     ///            (盤面をつくり、点数をつけて返す) </summary>
     private int SetSimurate(string pos)
     {
-        int[,] board = _manager.Board;
         int x = Array.IndexOf(Consts.INPUT_ALPHABET, pos[0]) + 1;
         int y = Array.IndexOf(Consts.INPUT_NUMBER, pos[1]) + 1;
 
         //TODO：配置シュミレーション
-        int[,] simurateBoard = FlipSimurate(board, x, y);
+        _simurateBoard = FlipSimurate(_manager.Board, x, y);
 
         //点数化
         int score = 0;
@@ -75,18 +80,18 @@ public class SimurationMove
             for (int j = 1; j < Consts.BOARD_SIZE + 1; j++)
             {
                 //置いてある石が味方のものなら
-                if (simurateBoard[i, j] == GameManager.CurrentColor)
+                if (_simurateBoard[i, j] == GameManager.CurrentColor)
                 {
                     score += _evaluationBoard[i - 1, j - 1];
                 }
                 //相手のものなら
-                else if (simurateBoard[i, j] == -GameManager.CurrentColor)
+                else if (_simurateBoard[i, j] == -GameManager.CurrentColor)
                 {
                     score -= _evaluationBoard[i - 1, j - 1];
                 }
             }
         }
-
+        Array.Clear(_simurateBoard, 0, _simurateBoard.Length);
         return score;
     }
 
