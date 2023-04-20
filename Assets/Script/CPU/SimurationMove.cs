@@ -30,11 +30,11 @@ public class SimurationMove
     public string Simuration(bool[,] movable)
     {
         //行動の流れ↓
-        //1,置けるマスを取得(引数)
-        //2,各マスに置いた時の盤面を取得
-        //3,_evaluationBoardに沿って盤面を点数化
-        //  (味方の石なら *1, 敵の石なら * -1)
-        //4,最大値をとったマスを選択
+        //☑1,置けるマスを取得(引数)
+        //  2,各マスに置いた時の盤面を取得
+        //  3,_evaluationBoardに沿って盤面を点数化
+        //    (味方の石なら *1, 敵の石なら * -1)
+        //  4,最大値をとったマスを選択
         _savedBoard = _manager.Board;
 
         int x = 0;
