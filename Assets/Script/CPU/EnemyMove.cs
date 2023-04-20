@@ -8,13 +8,14 @@ public class EnemyMove : MonoBehaviour
     private readonly RandomMove _random = new();
     private readonly PieceCountMove _count = new();
     private readonly EvaluationMove _evaluation = new();
-    private readonly TestMove _test = new();
+    private readonly SimurationMove _simuration = new();
 
     public SelectType Type { get => _type; protected set => _type = value; }
 
     private void Start()
     {
         _manager = GetComponent<GameManager>();
+        _simuration.Start(_manager);
     }
 
     public string TypeCheck()
@@ -33,8 +34,8 @@ public class EnemyMove : MonoBehaviour
             case SelectType.EVALUATION_FUNC:
                 input = _evaluation.Evaluation(_manager.MovablePos);
                 break;
-            case SelectType.TEST:
-                input = _test.TestSearch(_manager.MovablePos);
+            case SelectType.SIMURATE:
+                input = _simuration.Simuration(_manager.MovablePos);
                 break;
         }
         return input;
@@ -49,5 +50,6 @@ public enum SelectType
     PIECE_COUNT,
     /// <summary> 評価関数を用いて、マスを選ぶ </summary>
     EVALUATION_FUNC,
-    TEST,
+    /// <summary> 配置シュミレーションを行い、評価関数に基づいて選ぶ </summary>
+    SIMURATE,
 }

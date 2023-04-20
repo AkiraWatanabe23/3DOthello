@@ -26,8 +26,9 @@ public class PlayerInput : MonoBehaviour
         if (GameManager.CurrentColor == Consts.WHITE)
         {
             _inputPlace = _enemy.TypeCheck();
-            Debug.Log(_inputPlace);
+            Debug.Log($"相手が {_inputPlace} を選択しました");
         }
+
         StartCoroutine(InputMove());
     }
 
@@ -35,7 +36,6 @@ public class PlayerInput : MonoBehaviour
     {
         if (GameManager.CurrentColor == Consts.BLACK)
         {
-            //Consts.INPUT_ALPHABET[x - 1].ToString() + Consts.INPUT_NUMBER[y - 1]
             _inputPlace = Consts.INPUT_ALPHABET[(int)pos.x - 1].ToString() + Consts.INPUT_NUMBER[9 - (int)pos.z - 1];
             Debug.Log(_inputPlace + "を選択しました");
         }

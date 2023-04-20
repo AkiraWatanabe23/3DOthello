@@ -811,7 +811,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: New Text
+  m_Text: White
 --- !u!222 &1608683638
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -891,7 +891,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: New Text
+  m_Text: Black
 --- !u!222 &1774876813
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -977,7 +977,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5368509511642851569, guid: 70379f025259f2444808b219e6f897e6, type: 3}
       propertyPath: _type
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 70379f025259f2444808b219e6f897e6, type: 3}
