@@ -2,6 +2,7 @@
 
 public class EnemyMove : MonoBehaviour
 {
+    [Tooltip("敵の動き方")]
     [SerializeField] private SelectType _type = SelectType.RANDOM;
 
     private GameManager _manager = default;

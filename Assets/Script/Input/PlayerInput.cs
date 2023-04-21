@@ -9,7 +9,6 @@ public class PlayerInput : MonoBehaviour
     private GameManager _manager = default;
     private EnemyMove _enemy = default;
 
-    private readonly Reversi _reversi = new();
     private readonly TurnOverCheck _checking = new();
 
     private void Start()
@@ -56,7 +55,7 @@ public class PlayerInput : MonoBehaviour
             yield return new WaitForSeconds(1f);
         }
 
-        if (_reversi.InputCorrect(_inputPlace))
+        try
         {
             Debug.Log(_inputPlace);
             int x = Array.IndexOf(Consts.INPUT_ALPHABET, _inputPlace[0]) + 1;
@@ -86,9 +85,9 @@ public class PlayerInput : MonoBehaviour
                 }
             }
         }
-        else
+        catch (IndexOutOfRangeException range)
         {
-            Debug.LogWarning("不正な入力です。正しい形式(例. f5)で入力してください。");
+            Debug.LogWarning($"{range}：不正な入力です。");
         }
 
         if (_manager.Skip())

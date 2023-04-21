@@ -31,7 +31,6 @@ public class GameManager : MonoBehaviour
         _board[5, 4] = Consts.BLACK;
 
         _turnCount = 0;
-        //_currentColor = Consts.BLACK;
 
         ResetMovables();
         _pool = GetComponent<ObjectPool>();
@@ -48,6 +47,7 @@ public class GameManager : MonoBehaviour
                     _pool.SetBlack(new Vector3(i, 0.1f, 9 - j));
             }
         }
+
         _uiManager = GetComponent<UIManager>();
         StoneCount();
     }
