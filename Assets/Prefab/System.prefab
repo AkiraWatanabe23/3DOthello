@@ -48,21 +48,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d2c9a795c2ef38f48ba1f2556ff1e70e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _event:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: 
-        m_MethodName: LoadToScene
-        m_Mode: 3
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
 --- !u!114 &3796517476019684658
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -90,7 +75,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 21c31e366ca86d644a34aa546950e7af, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _input: {fileID: 0}
 --- !u!114 &5368509511642851569
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -103,7 +87,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c88120ae3273ab34c85557187ec06b7d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _type: 0
+  _type: 3
 --- !u!114 &1850082045
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -116,5 +100,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8b5f7dbd790dc1c42bde68ff8489c131, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _image: {fileID: 0}
   _blackText: {fileID: 0}
   _whiteText: {fileID: 0}

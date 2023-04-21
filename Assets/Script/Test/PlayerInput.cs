@@ -58,6 +58,7 @@ public class PlayerInput : MonoBehaviour
 
         if (_reversi.InputCorrect(_inputPlace))
         {
+            Debug.Log(_inputPlace);
             int x = Array.IndexOf(Consts.INPUT_ALPHABET, _inputPlace[0]) + 1;
             int y = Array.IndexOf(Consts.INPUT_NUMBER, _inputPlace[1]) + 1;
 
@@ -72,7 +73,7 @@ public class PlayerInput : MonoBehaviour
                 if (!_manager.GameFinish())
                 {
                     _manager.TurnCount++;
-                    GameManager.CurrentColor = -GameManager.CurrentColor;
+                    GameManager.CurrentColor *= -1;
 
                     _manager.ResetMovables();
                     _manager.StoneCount();

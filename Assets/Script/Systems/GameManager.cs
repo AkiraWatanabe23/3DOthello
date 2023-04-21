@@ -1,12 +1,9 @@
 ﻿using Constants;
 using UnityEngine;
-using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
-    [SerializeField] private UnityEvent _event = default;
-
     private readonly TurnOverCheck _checking = new();
     private ObjectPool _pool = default;
     private UIManager _uiManager = default;
@@ -132,12 +129,11 @@ public class GameManager : MonoBehaviour
 
         if (GameFinish())
         {
-            Debug.Log("ゲーム終了：石が置けなくなりました");
             WinningCheck();
             return false;
         }
 
-        CurrentColor = -CurrentColor;
+        CurrentColor *= -1;
         ResetMovables();
 
         return true;
@@ -147,7 +143,10 @@ public class GameManager : MonoBehaviour
     public bool GameFinish()
     {
         if (_turnCount >= Consts.MAX_TURNS)
+        {
+            Debug.Log("マスが埋まった");
             return true;
+        }
 
         for (int i = 1; i < Consts.BOARD_SIZE + 1; i++)
         {
@@ -155,13 +154,20 @@ public class GameManager : MonoBehaviour
             {
                 //まだ打てる手があれば続行する
                 if (_movablePos[i, j])
+                {
+                    Debug.Log("まだ打てる");
                     return false;
+                }
 
                 if (_checking.MovableCheck(_board, i, j, -CurrentColor) != 0)
+                {
+                    Debug.Log("まだ打てる");
                     return false;
+                }
             }
         }
 
+        Debug.Log("何もできない");
         return true;
     }
 
@@ -196,7 +202,6 @@ public class GameManager : MonoBehaviour
         }
         Debug.Log($"黒：{blackCount}, 白：{whiteCount}");
         _uiManager.GameFinish();
-        //_event?.Invoke();
     }
 
     public void StoneCount()

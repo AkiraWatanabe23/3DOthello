@@ -8,8 +8,6 @@ public class SimurationMove
     private GameManager _manager = default;
 
     private int[,] _simurateBoard = new int[10, 10];
-    /// <summary> 一時保存用の配列 </summary>
-    private int[,] _savedBoard = new int[10, 10];
     /// <summary> 盤面の評価値を示した盤面 </summary>
     private int[,] _evaluationBoard = new int[8, 8]
     { { 9, 1, 5, 3, 3, 5, 1, 9 },
@@ -35,7 +33,7 @@ public class SimurationMove
         //       各マスに置き、盤面を点数化
         //       最大値を取得
         //3, 最大値のマスを返す
-        _savedBoard = _manager.Board;
+        var baseBoard = _manager.Board;
 
         int x = 0;
         int y = 0;
@@ -58,8 +56,8 @@ public class SimurationMove
                 }
             }
         }
+        //_manager.Board = baseBoard;
 
-        _manager.Board = _savedBoard;
         return Consts.INPUT_ALPHABET[x - 1].ToString() + Consts.INPUT_NUMBER[y - 1];
     }
 
@@ -109,6 +107,7 @@ public class SimurationMove
 
             while (board[checkX, y] == -turn)
             {
+                Debug.Log(board[checkX, y]);
                 board[checkX, y] = turn;
                 checkX--;
             }
