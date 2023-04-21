@@ -12,6 +12,7 @@ public class EnemyMove : MonoBehaviour
     private readonly SimurationMove _simuration = new();
 
     public SelectType Type { get => _type; protected set => _type = value; }
+    public SimurationMove Simuration => _simuration;
 
     private void Start()
     {

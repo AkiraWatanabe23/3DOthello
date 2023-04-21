@@ -33,7 +33,6 @@ public class SimurationMove
         //       各マスに置き、盤面を点数化
         //       最大値を取得
         //3, 最大値のマスを返す
-        var baseBoard = _manager.Board;
 
         int x = 0;
         int y = 0;
@@ -56,7 +55,6 @@ public class SimurationMove
                 }
             }
         }
-        //_manager.Board = baseBoard;
 
         return Consts.INPUT_ALPHABET[x - 1].ToString() + Consts.INPUT_NUMBER[y - 1];
     }
