@@ -58,7 +58,7 @@ public class SimurationMove : SearchBase
         int x = Array.IndexOf(Consts.INPUT_ALPHABET, pos[0]) + 1;
         int y = Array.IndexOf(Consts.INPUT_NUMBER, pos[1]) + 1;
 
-        var simurateBoard = (int[,])_manager.Board.Clone();
+        int[,] simurateBoard = (int[,])_manager.Board.Clone();
 
         //TODO：配置シュミレーション
         simurateBoard = FlipSimurate(simurateBoard, x, y);

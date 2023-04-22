@@ -12,15 +12,22 @@ public class EnemyMove : MonoBehaviour
     private readonly SimurationMove _simuration = new();
     private readonly AheadSimurateMove _ahead = new();
 
-    public SelectType Type { get => _moveType; protected set => _moveType = value; }
-    public SimurationMove Simuration => _simuration;
-
     private void Start()
     {
         _manager = GetComponent<GameManager>();
 
-        if (_moveType == SelectType.PIECE_COUNT) _count.Start(_manager);
-        else if (_moveType == SelectType.SIMURATE) _simuration.Start(_manager);
+        switch (_moveType)
+        {
+            case SelectType.PIECE_COUNT:
+                _count.Start(_manager);
+                break;
+            case SelectType.SIMURATE:
+                _simuration.Start(_manager);
+                break;
+            case SelectType.AHEAD:
+                _ahead.Start(_manager);
+                break;
+        }
     }
 
     public string TypeCheck()

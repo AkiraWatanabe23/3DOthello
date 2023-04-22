@@ -7,6 +7,13 @@ public class AheadSimurateMove : SearchBase
     [Tooltip("何手先まで")]
     [SerializeField] private int _aheadCount = 1;
 
+    private GameManager _manager = default;
+
+    public void Start(GameManager manager)
+    {
+        _manager = manager;
+    }
+
     public string AheadSimurate(bool[,] movable)
     {
         //実行手順
@@ -24,6 +31,8 @@ public class AheadSimurateMove : SearchBase
 
         int x = 0;
         int y = 0;
+        //探索開始時の盤面
+        int[,] simurateBoard = (int[,])_manager.Board.Clone();
 
         while (_aheadCount > 0)
         {
