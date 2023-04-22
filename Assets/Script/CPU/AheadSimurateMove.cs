@@ -47,4 +47,18 @@ public class AheadSimurateMove : SearchBase
     {
         return board;
     }
+
+    private int ScoringMaximize()
+    {
+        int maxScore = int.MinValue;
+
+        return maxScore;
+    }
+
+    private int ScoringMinimize()
+    {
+        int minScore = int.MaxValue;
+
+        return minScore;
+    }
 }
