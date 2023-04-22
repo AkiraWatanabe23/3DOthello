@@ -5,7 +5,7 @@ using UnityEngine;
 /// <summary>
 /// 一番多くの石をひっくり返せるマスを選択する
 /// </summary>
-public class PieceCountMove
+public class PieceCountMove : SearchBase
 {
     private GameManager _manager = default;
 
@@ -44,7 +44,7 @@ public class PieceCountMove
         return Consts.INPUT_ALPHABET[x - 1].ToString() + Consts.INPUT_NUMBER[y - 1];
     }
 
-    private int[,] FlipSimurate(int[,] board, int x, int y)
+    public override int[,] FlipSimurate(int[,] board, int x, int y)
     {
         int setDir = _manager.MovableDir[x, y];
         int turn = GameManager.CurrentColor;

@@ -3,7 +3,7 @@ using System;
 using UnityEngine;
 
 [System.Serializable]
-public class SimurationMove
+public class SimurationMove : SearchBase
 {
     private GameManager _manager = default;
 
@@ -53,7 +53,7 @@ public class SimurationMove
 
     /// <summary> 実際に石を置き、盤面がどうなるかのシュミレーション
     ///            (盤面をつくり、点数をつけて返す) </summary>
-    private int SetSimurate(string pos)
+    public override int SetSimurate(string pos)
     {
         int x = Array.IndexOf(Consts.INPUT_ALPHABET, pos[0]) + 1;
         int y = Array.IndexOf(Consts.INPUT_NUMBER, pos[1]) + 1;
@@ -86,7 +86,7 @@ public class SimurationMove
         return checkScore;
     }
 
-    private int[,] FlipSimurate(int[,] board, int x, int y)
+    public override int[,] FlipSimurate(int[,] board, int x, int y)
     {
         int setDir = _manager.MovableDir[x, y];
         int turn = GameManager.CurrentColor;
