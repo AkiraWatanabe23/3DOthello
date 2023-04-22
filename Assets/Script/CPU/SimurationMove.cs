@@ -25,13 +25,6 @@ public class SimurationMove
 
     public string Simuration(bool[,] movable)
     {
-        //行動の流れ↓
-        //1, 置けるマスを取得
-        //2, ループ
-        //       各マスに置き、盤面を点数化
-        //       最大値を取得
-        //3, 最大値のマスを返す
-
         int x = 0;
         int y = 0;
         int score = int.MinValue;

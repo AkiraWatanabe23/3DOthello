@@ -18,8 +18,6 @@ public class GameManager : MonoBehaviour
 
     public static int CurrentColor = Consts.BLACK;
 
-    public TurnOverCheck Checking { get => _checking; protected set => _checking = value; }
-
     public int[,] Board { get => _board; set => _board = value; }
     public int TurnCount { get => _turnCount; set => _turnCount = value; }
     public bool[,] MovablePos { get => _movablePos; protected set => _movablePos = value; }

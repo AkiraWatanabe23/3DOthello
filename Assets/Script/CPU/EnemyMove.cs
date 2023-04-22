@@ -3,23 +3,24 @@
 public class EnemyMove : MonoBehaviour
 {
     [Tooltip("敵の動き方")]
-    [SerializeField] private SelectType _type = SelectType.RANDOM;
+    [SerializeField] private SelectType _moveType = SelectType.RANDOM;
 
     private GameManager _manager = default;
     private readonly RandomMove _random = new();
     private readonly PieceCountMove _count = new();
     private readonly EvaluationMove _evaluation = new();
     private readonly SimurationMove _simuration = new();
+    private readonly AheadSimurateMove _ahead = new();
 
-    public SelectType Type { get => _type; protected set => _type = value; }
+    public SelectType Type { get => _moveType; protected set => _moveType = value; }
     public SimurationMove Simuration => _simuration;
 
     private void Start()
     {
         _manager = GetComponent<GameManager>();
 
-        if (_type == SelectType.PIECE_COUNT) _count.Start(_manager);
-        else if (Type == SelectType.SIMURATE) _simuration.Start(_manager);
+        if (_moveType == SelectType.PIECE_COUNT) _count.Start(_manager);
+        else if (_moveType == SelectType.SIMURATE) _simuration.Start(_manager);
     }
 
     public string TypeCheck()
@@ -27,7 +28,7 @@ public class EnemyMove : MonoBehaviour
         string input = "";
 
         //相手の行動選択(今後増える予定有)
-        switch (_type)
+        switch (_moveType)
         {
             case SelectType.RANDOM:
                 input = _random.Random(_manager.MovablePos);
@@ -40,6 +41,9 @@ public class EnemyMove : MonoBehaviour
                 break;
             case SelectType.SIMURATE:
                 input = _simuration.Simuration(_manager.MovablePos);
+                break;
+            case SelectType.AHEAD:
+                input = _ahead.AheadSimurate(_manager.MovablePos);
                 break;
         }
         return input;
@@ -56,4 +60,6 @@ public enum SelectType
     EVALUATION_FUNC,
     /// <summary> 配置シュミレーションを行い、評価関数に基づいて選ぶ </summary>
     SIMURATE,
+    /// <summary> 指定した手数分だけ先読みして指す </summary>
+    AHEAD,
 }
