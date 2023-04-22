@@ -4,7 +4,7 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
-    private readonly TurnOverCheck _checking = new();
+    private TurnOverCheck _checking = new();
     private ObjectPool _pool = default;
     private UIManager _uiManager = default;
 
@@ -17,6 +17,8 @@ public class GameManager : MonoBehaviour
     private int[,] _movableDir = new int[10, 10];
 
     public static int CurrentColor = Consts.BLACK;
+
+    public TurnOverCheck Checking { get => _checking; protected set => _checking = value; }
 
     public int[,] Board { get => _board; set => _board = value; }
     public int TurnCount { get => _turnCount; set => _turnCount = value; }
@@ -64,6 +66,7 @@ public class GameManager : MonoBehaviour
     /// <summary> 置けるマスの探索 </summary>
     public void ResetMovables()
     {
+        //判定用の配列をリセット
         for (int i = 0; i < 10; i++)
         {
             for (int j = 0; j < 10; j++)
@@ -72,14 +75,14 @@ public class GameManager : MonoBehaviour
             }
         }
 
+        //再探索
         for (int x = 1; x < Consts.BOARD_SIZE + 1; x++)
         {
             for (int y = 1; y < Consts.BOARD_SIZE + 1; y++)
             {
-                int moveDir = _checking.MovableCheck(_board, x, y, CurrentColor);
-                _movableDir[x, y] = moveDir;
+                _movableDir[x, y] = _checking.MovableCheck(_board, x, y, CurrentColor);
 
-                if (moveDir != 0)
+                if (_movableDir[x, y] != 0)
                 {
                     _movablePos[x, y] = true;
                 }

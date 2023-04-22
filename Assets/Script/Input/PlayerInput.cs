@@ -39,12 +39,6 @@ public class PlayerInput : MonoBehaviour
             Debug.Log(_inputPlace + "を選択しました");
         }
 
-        if (_inputPlace == "e")
-        {
-            Debug.Log("中断");
-            //ゲームを中断する
-            _manager.WinningCheck();
-        }
         StartCoroutine(InputMove());
     }
 
@@ -57,7 +51,6 @@ public class PlayerInput : MonoBehaviour
 
         try
         {
-            Debug.Log(_inputPlace);
             int x = Array.IndexOf(Consts.INPUT_ALPHABET, _inputPlace[0]) + 1;
             int y = Array.IndexOf(Consts.INPUT_NUMBER, _inputPlace[1]) + 1;
 
@@ -85,9 +78,9 @@ public class PlayerInput : MonoBehaviour
                 }
             }
         }
-        catch (IndexOutOfRangeException range)
+        catch (Exception e)
         {
-            Debug.LogWarning($"{range}：不正な入力です。");
+            Debug.LogWarning($"{e}：不正な入力です。");
         }
 
         if (_manager.Skip())

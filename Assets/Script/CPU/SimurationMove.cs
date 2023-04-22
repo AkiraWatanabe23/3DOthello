@@ -7,9 +7,8 @@ public class SimurationMove
 {
     private GameManager _manager = default;
 
-    private int[,] _simurateBoard = new int[10, 10];
     /// <summary> 盤面の評価値を示した盤面 </summary>
-    private int[,] _evaluationBoard = new int[8, 8]
+    private readonly int[,] _evaluationBoard = new int[8, 8]
     { { 9, 1, 5, 3, 3, 5, 1, 9 },
       { 1, 1, 3, 4, 4, 3, 1, 1 },
       { 5, 3, 4, 6, 6, 4, 3, 5 },
@@ -22,7 +21,6 @@ public class SimurationMove
     public void Start(GameManager manager)
     {
         _manager = manager;
-        Array.Clear(_simurateBoard, 0, _simurateBoard.Length);
     }
 
     public string Simuration(bool[,] movable)
@@ -46,6 +44,7 @@ public class SimurationMove
                 {
                     string pos = Consts.INPUT_ALPHABET[i - 1].ToString() + Consts.INPUT_NUMBER[j - 1];
                     int simurateScore = SetSimurate(pos);
+                    Debug.Log($"SimurateScore：{simurateScore}, {pos}");
                     if (score < simurateScore)
                     {
                         score = simurateScore;
@@ -66,29 +65,32 @@ public class SimurationMove
         int x = Array.IndexOf(Consts.INPUT_ALPHABET, pos[0]) + 1;
         int y = Array.IndexOf(Consts.INPUT_NUMBER, pos[1]) + 1;
 
+        var simurateBoard = (int[,])_manager.Board.Clone();
+
         //TODO：配置シュミレーション
-        _simurateBoard = FlipSimurate(_manager.Board, x, y);
+        simurateBoard = FlipSimurate(simurateBoard, x, y);
 
         //点数化
-        int score = 0;
+        int checkScore = 0;
         for (int i = 1; i < Consts.BOARD_SIZE + 1; i++)
         {
             for (int j = 1; j < Consts.BOARD_SIZE + 1; j++)
             {
                 //置いてある石が味方のものなら
-                if (_simurateBoard[i, j] == GameManager.CurrentColor)
+                if (simurateBoard[i, j] == GameManager.CurrentColor)
                 {
-                    score += _evaluationBoard[i - 1, j - 1];
+                    checkScore += _evaluationBoard[i - 1, j - 1];
                 }
                 //相手のものなら
-                else if (_simurateBoard[i, j] == -GameManager.CurrentColor)
+                else if (simurateBoard[i, j] == -GameManager.CurrentColor)
                 {
-                    score -= _evaluationBoard[i - 1, j - 1];
+                    checkScore -= _evaluationBoard[i - 1, j - 1];
                 }
             }
         }
-        Array.Clear(_simurateBoard, 0, _simurateBoard.Length);
-        return score;
+        Array.Clear(simurateBoard, 0, simurateBoard.Length);
+
+        return checkScore;
     }
 
     private int[,] FlipSimurate(int[,] board, int x, int y)
@@ -202,7 +204,6 @@ public class SimurationMove
                 checkY++;
             }
         }
-
         return board;
     }
 }

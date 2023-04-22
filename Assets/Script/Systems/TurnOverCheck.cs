@@ -179,25 +179,8 @@ public class TurnOverCheck
     public int[,] FlipStone(int[,] board, int movable, int x, int y, int color)
     {
         board[x, y] = color;
-        Debug.Log(color);
 
         int setDir = movable;
-
-        //for (int i = 0; i < 10; i++)
-        //{
-        //    for (int j = 0; j < 10; j++)
-        //    {
-        //        if (board[i, j] == -1)
-        //        {
-        //            Debug.Log($"{i}, {j}");
-        //        }
-        //        else if (board[i, j] == 1)
-        //        {
-        //            Debug.Log("あああ");
-        //            Debug.Log($"{i}, {j}");
-        //        }
-        //    }
-        //}
 
         //ビット演算を行い、調べたい方向のフラグが立っているかを調べる
         //左
