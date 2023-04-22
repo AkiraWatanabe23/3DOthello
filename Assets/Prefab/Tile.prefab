@@ -114,21 +114,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 43fc9130f1844b74383e5a28093cd851, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _clickEvent:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 3796517476019684663, guid: 70379f025259f2444808b219e6f897e6, type: 3}
-        m_TargetAssemblyTypeName: 
-        m_MethodName: 
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: 
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+  _materials:
+  - {fileID: 2100000, guid: 078c4658b7b83454c90b70b4f6671c14, type: 2}
+  - {fileID: 2100000, guid: 1a812780f36a78b4fb655c215922ca78, type: 2}
 --- !u!1001 &47570673
 PrefabInstance:
   m_ObjectHideFlags: 0

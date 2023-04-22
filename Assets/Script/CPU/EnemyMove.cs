@@ -17,7 +17,9 @@ public class EnemyMove : MonoBehaviour
     private void Start()
     {
         _manager = GetComponent<GameManager>();
-        _simuration.Start(_manager);
+
+        if (_type == SelectType.PIECE_COUNT) _count.Start(_manager);
+        else if (Type == SelectType.SIMURATE) _simuration.Start(_manager);
     }
 
     public string TypeCheck()

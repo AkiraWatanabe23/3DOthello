@@ -1,12 +1,14 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
+using Constants;
 
 public class UIManager : MonoBehaviour
 {
     [SerializeField] private Image _image = default;
     [SerializeField] private Text _blackText = default;
     [SerializeField] private Text _whiteText = default;
+    [SerializeField] private Text _turn = default;
 
     private int _blackCount = 0;
     private int _whiteCount = 0;
@@ -27,11 +29,14 @@ public class UIManager : MonoBehaviour
         _blackText.text = "Black : " + _blackCount.ToString();
         _whiteText.text = "White : " + _whiteCount.ToString();
 
-        //テスト
-        //if (Input.GetMouseButtonDown(0))
-        //{
-        //    GameFinish();
-        //}
+        if (GameManager.CurrentColor == Consts.BLACK)
+        {
+            _turn.text = "TURN : BLACK";
+        }
+        else if (GameManager.CurrentColor == Consts.WHITE)
+        {
+            _turn.text = "TURN : WHITE";
+        }
     }
 
     public void GameFinish()
