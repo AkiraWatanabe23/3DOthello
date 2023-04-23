@@ -30,6 +30,18 @@ namespace Constants
         public static readonly char[] INPUT_ALPHABET = new char[] {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'};
         public static readonly char[] INPUT_NUMBER = new char[] {'1', '2', '3', '4', '5', '6', '7', '8'};
 
+        /// <summary> 盤面の評価値を示した盤面 </summary>
+        public static readonly int[,] EVALUATION_BOARD
+            = new int[8, 8]
+              { { 9, 1, 5, 3, 3, 5, 1, 9 },
+                { 1, 1, 3, 4, 4, 3, 1, 1 },
+                { 5, 3, 4, 6, 6, 4, 3, 5 },
+                { 3, 4, 6, 6, 6, 6, 4, 3 },
+                { 3, 4, 6, 6, 6, 6, 4, 3 },
+                { 5, 3, 4, 6, 6, 4, 3, 5 },
+                { 1, 1, 3, 4, 4, 3, 1, 1 },
+                { 9, 1, 5, 3, 3, 5, 1, 9 } };
+
         //手数の上限
         public const int MAX_TURNS = 60;
 

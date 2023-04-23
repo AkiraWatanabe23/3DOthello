@@ -14,17 +14,6 @@ public class AheadSimurateMove : SearchBase
     /// <summary> シュミレーションで取得した点数を保存する </summary>
     private List<int> _scoreList = new();
 
-    /// <summary> 盤面の評価値を示した盤面 </summary>
-    private readonly int[,] _evaluationBoard = new int[8, 8]
-    { { 9, 1, 5, 3, 3, 5, 1, 9 },
-      { 1, 1, 3, 4, 4, 3, 1, 1 },
-      { 5, 3, 4, 6, 6, 4, 3, 5 },
-      { 3, 4, 6, 6, 6, 6, 4, 3 },
-      { 3, 4, 6, 6, 6, 6, 4, 3 },
-      { 5, 3, 4, 6, 6, 4, 3, 5 },
-      { 1, 1, 3, 4, 4, 3, 1, 1 },
-      { 9, 1, 5, 3, 3, 5, 1, 9 } };
-
     public void Start(GameManager manager)
     {
         _manager = manager;

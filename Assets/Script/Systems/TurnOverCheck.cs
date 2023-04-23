@@ -192,7 +192,6 @@ public class TurnOverCheck
             {
                 board[checkX, y] = color;
                 checkX--;
-                Debug.Log("ç∂");
             }
         }
 
@@ -207,7 +206,6 @@ public class TurnOverCheck
                 board[checkX, checkY] = color;
                 checkX--;
                 checkY--;
-                Debug.Log("ç∂è„");
             }
         }
 
@@ -220,7 +218,6 @@ public class TurnOverCheck
             {
                 board[x, checkY] = color;
                 checkY--;
-                Debug.Log("è„");
             }
         }
 
@@ -235,7 +232,6 @@ public class TurnOverCheck
                 board[checkX, checkY] = color;
                 checkX++;
                 checkY--;
-                Debug.Log("âEè„");
             }
         }
 
@@ -248,7 +244,6 @@ public class TurnOverCheck
             {
                 board[checkX, y] = color;
                 checkX++;
-                Debug.Log("âE");
             }
         }
 
@@ -263,7 +258,6 @@ public class TurnOverCheck
                 board[checkX, checkY] = color;
                 checkX++;
                 checkY++;
-                Debug.Log("âEâ∫");
             }
         }
 
@@ -276,7 +270,6 @@ public class TurnOverCheck
             {
                 board[x, checkY] = color;
                 checkY++;
-                Debug.Log("ÇµÇΩ");
             }
         }
 
@@ -291,7 +284,6 @@ public class TurnOverCheck
                 board[checkX, checkY] = color;
                 checkX--;
                 checkY++;
-                Debug.Log("ç∂â∫");
             }
         }
         return board;

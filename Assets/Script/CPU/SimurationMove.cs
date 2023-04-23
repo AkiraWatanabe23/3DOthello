@@ -7,17 +7,6 @@ public class SimurationMove : SearchBase
 {
     private GameManager _manager = default;
 
-    /// <summary> 盤面の評価値を示した盤面 </summary>
-    private readonly int[,] _evaluationBoard = new int[8, 8]
-    { { 9, 1, 5, 3, 3, 5, 1, 9 },
-      { 1, 1, 3, 4, 4, 3, 1, 1 },
-      { 5, 3, 4, 6, 6, 4, 3, 5 },
-      { 3, 4, 6, 6, 6, 6, 4, 3 },
-      { 3, 4, 6, 6, 6, 6, 4, 3 },
-      { 5, 3, 4, 6, 6, 4, 3, 5 },
-      { 1, 1, 3, 4, 4, 3, 1, 1 },
-      { 9, 1, 5, 3, 3, 5, 1, 9 } };
-
     public void Start(GameManager manager)
     {
         _manager = manager;
@@ -72,12 +61,12 @@ public class SimurationMove : SearchBase
                 //置いてある石が味方のものなら
                 if (simurateBoard[i, j] == GameManager.CurrentColor)
                 {
-                    checkScore += _evaluationBoard[i - 1, j - 1];
+                    checkScore += Consts.EVALUATION_BOARD[i - 1, j - 1];
                 }
                 //相手のものなら
                 else if (simurateBoard[i, j] == -GameManager.CurrentColor)
                 {
-                    checkScore -= _evaluationBoard[i - 1, j - 1];
+                    checkScore -= Consts.EVALUATION_BOARD[i - 1, j - 1];
                 }
             }
         }

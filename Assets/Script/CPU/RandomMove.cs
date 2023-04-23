@@ -1,6 +1,5 @@
 ﻿using Constants;
 using System.Collections.Generic;
-using UnityEngine;
 
 [System.Serializable]
 /// <summary>
@@ -21,7 +20,6 @@ public class RandomMove
             }
         }
         int randomIndex = UnityEngine.Random.Range(0, grids.Count);
-        Debug.Log(grids.Count);
         var x = grids[randomIndex][0];
         var y = grids[randomIndex][1];
 
