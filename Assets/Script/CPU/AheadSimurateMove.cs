@@ -1,4 +1,5 @@
 ﻿using Constants;
+using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
@@ -8,7 +9,21 @@ public class AheadSimurateMove : SearchBase
     [SerializeField] private int _aheadCount = 1;
 
     private GameManager _manager = default;
+    /// <summary> ターンを確認する </summary>
     private int _turn = 0;
+    /// <summary> シュミレーションで取得した点数を保存する </summary>
+    private List<int> _scoreList = new();
+
+    /// <summary> 盤面の評価値を示した盤面 </summary>
+    private readonly int[,] _evaluationBoard = new int[8, 8]
+    { { 9, 1, 5, 3, 3, 5, 1, 9 },
+      { 1, 1, 3, 4, 4, 3, 1, 1 },
+      { 5, 3, 4, 6, 6, 4, 3, 5 },
+      { 3, 4, 6, 6, 6, 6, 4, 3 },
+      { 3, 4, 6, 6, 6, 6, 4, 3 },
+      { 5, 3, 4, 6, 6, 4, 3, 5 },
+      { 1, 1, 3, 4, 4, 3, 1, 1 },
+      { 9, 1, 5, 3, 3, 5, 1, 9 } };
 
     public void Start(GameManager manager)
     {
@@ -32,8 +47,7 @@ public class AheadSimurateMove : SearchBase
         //5,点数化( <<最小値>> を取得)...マスを保存しておく
         //6,count--;
 
-        int x = 0;
-        int y = 0;
+        int[] pos = new int[2];
 
         //探索開始時の盤面
         int[,] simurateBoard = (int[,])_manager.Board.Clone();
@@ -44,16 +58,18 @@ public class AheadSimurateMove : SearchBase
             //探索が終わるまでループ
             if (_turn == Consts.WHITE)
             {
-                int maxScore = ScoringMaximize(simurateBoard);
+                pos = ScoringMaximize(simurateBoard);
             }
             else if (_turn == Consts.BLACK)
             {
-                int minScore = ScoringMinimize(simurateBoard);
+                pos = ScoringMinimize(simurateBoard);
             }
 
             _turn *= -1;
             _aheadCount--;
         }
+        int x = pos[0];
+        int y = pos[1];
 
         return Consts.INPUT_ALPHABET[x - 1].ToString() + Consts.INPUT_NUMBER[y - 1];
     }
@@ -63,24 +79,27 @@ public class AheadSimurateMove : SearchBase
         return board;
     }
 
-    /// <summary> シュミレーションした盤面の最大値を返す
+    /// <summary> シュミレーションした最大値のマスを返す
     ///            (自分のターンのシュミレーションに使う) </summary>
-    private int ScoringMaximize(int[,] board)
+    private int[] ScoringMaximize(int[,] board)
     {
-        int maxScore = int.MinValue;
+        //探索→点数化(Listに追加)→最大値(最小値)を取得→マスを返す
+        int x = 0;
+        int y = 0;
         int score = Scoring(board);
 
-        return maxScore;
+        return new int[] { x, y };
     }
 
-    /// <summary> シュミレーションした盤面の最小値を返す
+    /// <summary> シュミレーションした最小値のマスを返す
     ///            (相手のターンのシュミレーションに使う) </summary>
-    private int ScoringMinimize(int[,] board)
+    private int[] ScoringMinimize(int[,] board)
     {
-        int minScore = int.MaxValue;
+        int x = 0;
+        int y = 0;
         int score = Scoring(board);
 
-        return minScore;
+        return new int[] { x, y };
     }
 
     /// <summary> 盤面に点数をつける </summary>
@@ -102,7 +121,6 @@ public class AheadSimurateMove : SearchBase
                 }
             }
         }
-
         return score;
     }
 }
