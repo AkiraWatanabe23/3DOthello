@@ -5,7 +5,7 @@ using UnityEngine;
 [System.Serializable]
 public class AheadSimurateMove : SearchBase
 {
-    [Tooltip("何手先まで")]
+    [Tooltip("何手先まで探索するか")]
     [SerializeField] private int _aheadCount = 1;
 
     private GameManager _manager = default;
@@ -13,6 +13,10 @@ public class AheadSimurateMove : SearchBase
     private int _turn = 0;
     /// <summary> シュミレーションで取得した点数を保存する </summary>
     private List<int> _scoreList = new();
+
+    private int[,] _simurateBoard = new int[10, 10];
+    private int[,] _searchDir = new int[10, 10];
+    private bool[,] _searchPos = new bool[10, 10];
 
     public void Start(GameManager manager)
     {
@@ -39,7 +43,7 @@ public class AheadSimurateMove : SearchBase
         int[] pos = new int[2];
 
         //探索開始時の盤面
-        int[,] simurateBoard = (int[,])_manager.Board.Clone();
+        _simurateBoard = (int[,])_manager.Board.Clone();
         _turn = GameManager.CurrentColor;
 
         while (_aheadCount > 0)
@@ -47,25 +51,23 @@ public class AheadSimurateMove : SearchBase
             //探索が終わるまでループ
             if (_turn == Consts.WHITE)
             {
-                pos = ScoringMaximize(simurateBoard);
+                //引数は仮
+                pos = ScoringMaximize(_simurateBoard);
             }
             else if (_turn == Consts.BLACK)
             {
-                pos = ScoringMinimize(simurateBoard);
+                //引数は仮
+                pos = ScoringMinimize(_simurateBoard);
             }
 
             _turn *= -1;
             _aheadCount--;
+            SearchMovable();
         }
         int x = pos[0];
         int y = pos[1];
 
         return Consts.INPUT_ALPHABET[x - 1].ToString() + Consts.INPUT_NUMBER[y - 1];
-    }
-
-    public override int[,] FlipSimurate(int[,] board, int x, int y)
-    {
-        return board;
     }
 
     /// <summary> シュミレーションした最大値のマスを返す
@@ -111,5 +113,145 @@ public class AheadSimurateMove : SearchBase
             }
         }
         return score;
+    }
+
+    public override int[,] FlipSimurate(int[,] board, int x, int y)
+    {
+        int setDir = _manager.MovableDir[x, y];
+        int searchTurn = _turn;
+        board[x, y] = searchTurn;
+
+        //ビット演算を行い、調べたい方向のフラグが立っているかを調べる
+        //左
+        if ((setDir & Consts.LEFT) == Consts.LEFT)
+        {
+            int checkX = x - 1;
+
+            while (board[checkX, y] == -searchTurn)
+            {
+                Debug.Log(board[checkX, y]);
+                board[checkX, y] = searchTurn;
+                checkX--;
+            }
+        }
+
+        //左上
+        if ((setDir & Consts.UPPER_LEFT) == Consts.UPPER_LEFT)
+        {
+            int checkX = x - 1;
+            int checkY = y - 1;
+
+            while (board[checkX, checkY] == -searchTurn)
+            {
+                board[checkX, checkY] = searchTurn;
+                checkX--;
+                checkY--;
+            }
+        }
+
+        //上
+        if ((setDir & Consts.UPPER) == Consts.UPPER)
+        {
+            int checkY = y - 1;
+
+            while (board[x, checkY] == -searchTurn)
+            {
+                board[x, checkY] = searchTurn;
+                checkY--;
+            }
+        }
+
+        //右上
+        if ((setDir & Consts.UPPER_RIGHT) == Consts.UPPER_RIGHT)
+        {
+            int checkX = x + 1;
+            int checkY = y - 1;
+
+            while (board[checkX, checkY] == -searchTurn)
+            {
+                board[checkX, checkY] = searchTurn;
+                checkX++;
+                checkY--;
+            }
+        }
+
+        //右
+        if ((setDir & Consts.RIGHT) == Consts.RIGHT)
+        {
+            int checkX = x + 1;
+
+            while (board[checkX, y] == -searchTurn)
+            {
+                board[checkX, y] = searchTurn;
+                checkX++;
+            }
+        }
+
+        //右下
+        if ((setDir & Consts.LOWER_RIGHT) == Consts.LOWER_RIGHT)
+        {
+            int checkX = x + 1;
+            int checkY = y + 1;
+
+            while (board[checkX, checkY] == -searchTurn)
+            {
+                board[checkX, checkY] = searchTurn;
+                checkX++;
+                checkY++;
+            }
+        }
+
+        //下
+        if ((setDir & Consts.LOWER) == Consts.LOWER)
+        {
+            int checkY = y + 1;
+
+            while (board[x, checkY] == -searchTurn)
+            {
+                board[x, checkY] = searchTurn;
+                checkY++;
+            }
+        }
+
+        //左下
+        if ((setDir & Consts.LOWER_LEFT) == Consts.LOWER_LEFT)
+        {
+            int checkX = x - 1;
+            int checkY = y + 1;
+
+            while (board[checkX, checkY] == -searchTurn)
+            {
+                board[checkX, checkY] = searchTurn;
+                checkX--;
+                checkY++;
+            }
+        }
+        return board;
+    }
+
+    private void SearchMovable()
+    {
+        //判定用の配列をリセット
+        for (int i = 0; i < 10; i++)
+        {
+            for (int j = 0; j < 10; j++)
+            {
+                _searchPos[i, j] = false;
+            }
+        }
+
+        //再探索
+        for (int x = 1; x < Consts.BOARD_SIZE + 1; x++)
+        {
+            for (int y = 1; y < Consts.BOARD_SIZE + 1; y++)
+            {
+                _searchDir[x, y] = _manager.Checking.MovableCheck(_simurateBoard, x, y, _turn);
+
+                if (_searchDir[x, y] != 0)
+                {
+                    _searchPos[x, y] = true;
+                }
+            }
+        }
     }
 }
