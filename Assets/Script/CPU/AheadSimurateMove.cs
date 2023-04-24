@@ -21,9 +21,12 @@ public class AheadSimurateMove : SearchBase
     /// <summary> 置けるマスを保存 </summary>
     private bool[,] _searchPos = new bool[10, 10];
 
+    private List<GridData>[][] _grids = default;
+
     public void Start(GameManager manager)
     {
         _manager = manager;
+        _grids = new List<GridData>[_aheadCount][];
     }
 
     public string AheadSimurate(bool[,] movable)
@@ -245,14 +248,14 @@ public class AheadSimurateMove : SearchBase
     }
 
     /// <summary> 点数とマスを保存する </summary>
-    private struct GridScoring
+    private struct GridData
     {
         public int Parent;
         public int Score;
         public int PosX;
         public int PosY;
 
-        public GridScoring(int parent, int score, int x, int y)
+        public GridData(int parent, int score, int x, int y)
         {
             Parent = parent;
             Score = score;
