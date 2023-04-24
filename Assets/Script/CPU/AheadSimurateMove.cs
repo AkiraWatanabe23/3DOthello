@@ -14,8 +14,11 @@ public class AheadSimurateMove : SearchBase
     /// <summary> シュミレーションで取得した点数を保存する </summary>
     private List<int> _scoreList = new();
 
+    /// <summary> 判定用に使う盤面 </summary>
     private int[,] _simurateBoard = new int[10, 10];
+    /// <summary> どの方向にひっくり返るか保存 </summary>
     private int[,] _searchDir = new int[10, 10];
+    /// <summary> 置けるマスを保存 </summary>
     private bool[,] _searchPos = new bool[10, 10];
 
     public void Start(GameManager manager)
@@ -25,25 +28,13 @@ public class AheadSimurateMove : SearchBase
 
     public string AheadSimurate(bool[,] movable)
     {
-        //実行手順
-        //自分のターンなら
-        //1,シュミレーション
-        //2,点数化( <<最大値>> を取得)...マスを保存しておく
-        //3,count--;
-
-        //探索を終えていなかったら
-        //シュミレーションのターンを切り替える
-        //置けるマスを列挙(bool[,])
-
-        //相手ターンなら
-        //4,シュミレーション
-        //5,点数化( <<最小値>> を取得)...マスを保存しておく
-        //6,count--;
-
+        //0...x, 1...y
         int[] pos = new int[2];
 
-        //探索開始時の盤面
+        //探索開始時の情報を保存
         _simurateBoard = (int[,])_manager.Board.Clone();
+        _searchDir = (int[,])_manager.MovableDir.Clone();
+        _searchPos = (bool[,])movable.Clone();
         _turn = GameManager.CurrentColor;
 
         while (_aheadCount > 0)
@@ -51,12 +42,10 @@ public class AheadSimurateMove : SearchBase
             //探索が終わるまでループ
             if (_turn == Consts.WHITE)
             {
-                //引数は仮
                 pos = ScoringMaximize(_simurateBoard);
             }
             else if (_turn == Consts.BLACK)
             {
-                //引数は仮
                 pos = ScoringMinimize(_simurateBoard);
             }
 
@@ -117,7 +106,7 @@ public class AheadSimurateMove : SearchBase
 
     public override int[,] FlipSimurate(int[,] board, int x, int y)
     {
-        int setDir = _manager.MovableDir[x, y];
+        int setDir = _searchDir[x, y];
         int searchTurn = _turn;
         board[x, y] = searchTurn;
 
