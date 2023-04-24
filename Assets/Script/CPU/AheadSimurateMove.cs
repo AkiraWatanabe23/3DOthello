@@ -243,4 +243,21 @@ public class AheadSimurateMove : SearchBase
             }
         }
     }
+
+    /// <summary> 点数とマスを保存する </summary>
+    private struct GridScoring
+    {
+        public int Parent;
+        public int Score;
+        public int PosX;
+        public int PosY;
+
+        public GridScoring(int parent, int score, int x, int y)
+        {
+            Parent = parent;
+            Score = score;
+            PosX = x;
+            PosY = y;
+        }
+    }
 }
