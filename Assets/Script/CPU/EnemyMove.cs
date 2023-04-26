@@ -6,11 +6,11 @@ public class EnemyMove : MonoBehaviour
     [SerializeField] private SelectType _moveType = SelectType.RANDOM;
 
     private GameManager _manager = default;
-    private readonly RandomMove _random = new();
-    private readonly PieceCountMove _count = new();
-    private readonly EvaluationMove _evaluation = new();
-    private readonly SimurationMove _simuration = new();
-    private readonly AheadSimurateMove _ahead = new();
+    private RandomMove _random = default;
+    private PieceCountMove _count = default;
+    private EvaluationMove _evaluation = default;
+    private SimurationMove _simuration = default;
+    private AheadSimurateMove _ahead = default;
 
     private void Start()
     {
@@ -18,13 +18,22 @@ public class EnemyMove : MonoBehaviour
 
         switch (_moveType)
         {
+            case SelectType.RANDOM:
+                _random = new();
+                break;
             case SelectType.PIECE_COUNT:
+                _count = new();
                 _count.Start(_manager);
                 break;
+            case SelectType.EVALUATION_FUNC:
+                _evaluation = new();
+                break;
             case SelectType.SIMURATE:
+                _simuration = new();
                 _simuration.Start(_manager);
                 break;
             case SelectType.AHEAD:
+                _ahead = new();
                 _ahead.Start(_manager);
                 break;
         }

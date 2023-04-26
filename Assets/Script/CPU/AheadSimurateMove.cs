@@ -65,6 +65,7 @@ public class AheadSimurateMove : SearchBase
         int x = pos[0];
         int y = pos[1];
 
+        //探索を終えたらリセット
         Array.Clear(_grids, 0, _grids.Length);
 
         return Consts.INPUT_ALPHABET[x - 1].ToString() + Consts.INPUT_NUMBER[y - 1];
@@ -81,7 +82,7 @@ public class AheadSimurateMove : SearchBase
         for (int i = 0; i < _grids[depth].Length; i++)
         {
             int score = Scoring(board);
-            //以下仮
+            //以下仮(parentに格納する値を修正)
             _grids[depth][i].Add(new GridData(depth - 1, score, x, y));
         }
 
